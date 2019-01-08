@@ -1,0 +1,8 @@
+{
+  "nomenclature": {
+    "name": "auth",
+    "verboseName": "Auth"
+  },
+  "baseUrl": "/auth",
+  "source": "auth/src/index"
+}
