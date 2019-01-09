@@ -16,8 +16,12 @@ export const getForgotPasswordUrl = () => {
 
 //  Backend API's
 
+export const getUserLoginUrlApi = () => {
+  return '/session_auth/login/'
+}
+
 export const getWhoAmIApi = () => {
-  return '/kernel/who_am_i'
+  return '/kernel/who_am_i/'
 }
 
 export const getQuestionApi = username => {

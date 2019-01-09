@@ -13,9 +13,10 @@ export const userLogin = (data, callback) => {
     try {
       const res = await axios.post(getUserLoginUrlApi(), data)
       dispatch({ type: 'LOG_IN', payload: res.data })
-
+      console.log(res)
       callback(res.data.status)
     } catch (err) {
+      console.log(err.response)
       callback(err.response.data.errors.non_field_errors[0])
     }
   }
