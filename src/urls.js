@@ -1,25 +1,33 @@
 import config from '../config.json'
 
-export function getAuthUrl () {
+//  Frontend Url's
+
+export const getAuthUrl = () => {
   return config.baseUrl
 }
 
-export function getLoginUrl () {
+export const getLoginUrl = () => {
   return `${getAuthUrl()}/login`
 }
 
-export function getForgotPasswordUrl () {
-  return `${getAuthUrl()}/forgot/password`
+export const getForgotPasswordUrl = () => {
+  return `${getAuthUrl()}/change/password`
 }
 
-export function getLinkStorageUrl () {
-  return `${getAuthUrl()}/storage`
+//  Backend API's
+
+export const getWhoAmIApi = () => {
+  return '/kernel/who_am_i'
 }
 
-export function getChangePasswordUrl () {
-  return `${getAuthUrl()}/forgot/password/new`
+export const getQuestionApi = username => {
+  return `/base_auth/verify_secret_answer/?username=${username}`
 }
 
-export function getUserLoginUrl () {
-  return '/session_auth/login/'
+export const getVerifyAnswerApi = username => {
+  return `/base_auth/verify_secret_answer/?username=${username}`
+}
+
+export const changePasswordApi = () => {
+  return '/base_auth/reset_password/'
 }

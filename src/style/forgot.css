@@ -5,7 +5,7 @@
 
 .app-main {
   height: max-content;
-  padding: 4rem 6rem;
+  padding: 4rem 4rem;
   border: 1.5px solid #efefef;
   box-sizing: border-box;
   border-radius: 3px;
@@ -21,7 +21,7 @@
 
 .form {
   font-size: 2rem;
-  width: 25rem;
+  width: 24rem;
   min-height: 10rem;
 }
 
@@ -53,6 +53,9 @@
 .error {
   color: #eb5757;
   margin: 1rem 0;
+}
+
+.error-margin {
   margin-left: 1.85714em !important;
 }
 
@@ -70,5 +73,6 @@
   }
   .app-main {
     padding: 4rem 2rem;
+    border: none;
   }
 }

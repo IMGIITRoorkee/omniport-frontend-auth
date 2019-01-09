@@ -1,13 +1,20 @@
 import axios from 'axios'
 
-import { getUserLoginUrl } from 'services/auth/src/urls'
+import {
+  getUserLoginUrlApi,
+  getWhoAmIApi,
+  getQuestionApi,
+  getVerifyAnswerApi,
+  changePasswordApi
+} from 'services/auth/src/urls'
 
 export const userLogin = (data, callback) => {
   return async (dispatch, getState) => {
     try {
-      const res = await axios.post(getUserLoginUrl(), data)
+      const res = await axios.post(getUserLoginUrlApi(), data)
       dispatch({ type: 'LOG_IN', payload: res.data })
-      callback(res.data.data.attributes.text)
+
+      callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.non_field_errors[0])
     }
@@ -17,7 +24,7 @@ export const userLogin = (data, callback) => {
 export const whoami = () => {
   return async (dispatch, getState) => {
     try {
-      const res = await axios.get('/kernel/who_am_i')
+      const res = await axios.get(getWhoAmIApi())
       dispatch({
         type: 'LOG_IN',
         payload: res.data
@@ -27,6 +34,40 @@ export const whoami = () => {
       dispatch({
         type: 'LOG_OUT'
       })
+    }
+  }
+}
+
+export const getQuestion = (username, callback) => {
+  return async () => {
+    try {
+      const res = await axios.get(getQuestionApi(username))
+
+      callback(res.data.secretQuestion)
+    } catch (err) {
+      callback(err.response.data.errors.username[0])
+    }
+  }
+}
+
+export const validateAnswer = (data, callback) => {
+  return async () => {
+    try {
+      const res = await axios.post(getVerifyAnswerApi(data.username), data)
+      callback(res.data.status)
+    } catch (err) {
+      callback(err.response.data.errors.secretAnswer[0])
+    }
+  }
+}
+
+export const changePassword = (data, callback) => {
+  return async () => {
+    try {
+      const res = await axios.post(changePasswordApi(), data)
+      callback(res.data.status)
+    } catch (err) {
+      callback(err.response.data.errors.secretAnswer[0])
     }
   }
 }

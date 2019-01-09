@@ -5,9 +5,10 @@ import { LastLocationProvider } from 'react-router-last-location'
 import { withLastLocation } from 'react-router-last-location'
 
 import { store } from 'core'
+
 import { response } from '../src/utils'
 
-class AuthenticatedRoute extends React.Component {
+class PrivateRoute extends React.Component {
   state = {
     isAuthenticated: response.CHECKING
   }
@@ -43,6 +44,7 @@ class AuthenticatedRoute extends React.Component {
         </Segment>
       )
     }
+
     return (
       <LastLocationProvider>
         <Route
@@ -64,4 +66,4 @@ class AuthenticatedRoute extends React.Component {
   }
 }
 
-export default withLastLocation(AuthenticatedRoute)
+export default withLastLocation(PrivateRoute)
