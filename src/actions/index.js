@@ -5,19 +5,31 @@ import {
   getWhoAmIApi,
   getQuestionApi,
   getVerifyAnswerApi,
-  changePasswordApi
+  changePasswordApi,
+  getUserLogoutUrlApi
 } from 'services/auth/src/urls'
 
 export const userLogin = (data, callback) => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       const res = await axios.post(getUserLoginUrlApi(), data)
       dispatch({ type: 'LOG_IN', payload: res.data })
-      console.log(res)
       callback(res.data.status)
     } catch (err) {
-      console.log(err.response)
       callback(err.response.data.errors.non_field_errors[0])
+    }
+  }
+}
+
+export const userLogout = (_, callback) => {
+  return async dispatch => {
+    try {
+      const res = await axios.get(getUserLogoutUrlApi())
+      dispatch({ type: 'LOG_OUT', payload: res.data })
+      callback()
+    } catch (err) {
+      callback()
+      console.log(err)
     }
   }
 }

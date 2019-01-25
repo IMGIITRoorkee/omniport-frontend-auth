@@ -7,8 +7,11 @@ import { store } from 'core'
 import { whoami } from 'services/auth/src/actions'
 
 import { App } from './components/app'
+import { Logout } from './components/logout'
 import { response } from './utils'
+import { getLogoutUrl } from './urls'
 
+// Accessed from the global store
 const mapStateToProps = () => {
   return {
     isLoggedIn: store.getState().user.isAuthenticated,
@@ -25,21 +28,21 @@ export default class AuthRouter extends Component {
 
   render() {
     const { match, isLoggedIn } = this.props
-    console.log(response.CHECKING)
     if (isLoggedIn === response.CHECKING) {
       return <></>
     }
 
     return (
-      <Switch>
-        <Provider store={store}>
+      <Provider store={store}>
+        <Switch>
+          <Route exact path={`${match.path}/logout`} component={Logout} />
           {!isLoggedIn ? (
             <Route path={`${match.path}/`} component={App} />
           ) : (
             <Redirect to={'/'} />
           )}
-        </Provider>
-      </Switch>
+        </Switch>
+      </Provider>
     )
   }
 }

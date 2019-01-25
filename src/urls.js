@@ -10,6 +10,10 @@ export const getLoginUrl = () => {
   return `${getAuthUrl()}/login`
 }
 
+export const getLogoutUrl = () => {
+  return `${getAuthUrl()}/logout`
+}
+
 export const getForgotPasswordUrl = () => {
   return `${getAuthUrl()}/change/password`
 }
@@ -18,6 +22,10 @@ export const getForgotPasswordUrl = () => {
 
 export const getUserLoginUrlApi = () => {
   return '/session_auth/login/'
+}
+
+export const getUserLogoutUrlApi = () => {
+  return '/session_auth/logout/'
 }
 
 export const getWhoAmIApi = () => {
