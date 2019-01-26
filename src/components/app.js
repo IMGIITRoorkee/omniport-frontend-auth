@@ -20,11 +20,7 @@ export class App extends Component {
     const creators = []
     return (
       <div styleName='main.app'>
-        <AppHeader
-          appName='Omniport'
-          appLink={`http://${window.location.host}${match.path}`}
-          userDropdown={false}
-        />
+        <AppHeader />
         <div styleName='auth.app-main'>
           <Switch>
             <Route exact path={getLoginUrl()} component={Login} />
