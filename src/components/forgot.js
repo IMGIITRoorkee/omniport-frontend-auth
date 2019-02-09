@@ -30,6 +30,7 @@ export class ForgotPassword extends Component {
     isResetVisible: false,
     isVisible: true,
     type: 'password',
+    value: 'question',
   }
 
   handleChange = (e, { value }) => this.setState({ value })
@@ -116,7 +117,7 @@ export class ForgotPassword extends Component {
                   {isVisible ? (
                     isQuestionVisible ? (
                       <Form>
-                        <Form.Field>
+                        <Form.Field error={error}>
                           <label>Username</label>
                           <input
                             value={username}
@@ -151,8 +152,8 @@ export class ForgotPassword extends Component {
                           />
                         </Form.Field>
                         {value === 'question' && (
-                          <Form.Field>
-                            <div>{question}</div>
+                          <Form.Field error={error}>
+                            <label>{question}</label>
                             <input
                               value={answer}
                               onChange={e =>
@@ -178,15 +179,17 @@ export class ForgotPassword extends Component {
                             id
                           </div>
                         )}
-                        <Button
-                          fluid
-                          primary
-                          onClick={this.submit}
-                          disabled={!value && true}
-                          type="submit"
-                        >
-                          Continue
-                        </Button>
+                        <Form.Field>
+                          <Button
+                            fluid
+                            primary
+                            onClick={this.submit}
+                            disabled={!value && true}
+                            type="submit"
+                          >
+                            Continue
+                          </Button>
+                        </Form.Field>
                       </Form>
                     )
                   ) : (
@@ -270,16 +273,17 @@ export class ForgotPassword extends Component {
                           )}
                         </div>
                       </Form.Field>
-
-                      <Button
-                        fluid
-                        primary
-                        onClick={this.change}
-                        disabled={disabled}
-                        type="submit"
-                      >
-                        Change Password
-                      </Button>
+                      <Form.Field>
+                        <Button
+                          fluid
+                          primary
+                          onClick={this.change}
+                          disabled={disabled}
+                          type="submit"
+                        >
+                          Change Password
+                        </Button>
+                      </Form.Field>
                       {success && (
                         <div>
                           Successfully updated password &nbsp;

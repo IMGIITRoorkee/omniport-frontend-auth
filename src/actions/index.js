@@ -16,7 +16,7 @@ export const userLogin = (data, callback) => {
       dispatch({ type: 'LOG_IN', payload: res.data })
       callback(res.data.status)
     } catch (err) {
-      callback(err.response.data.errors.non_field_errors[0])
+      callback(err.response.data.errors.nonFieldErrors[0])
     }
   }
 }
@@ -29,7 +29,6 @@ export const userLogout = (_, callback) => {
       callback()
     } catch (err) {
       callback()
-      console.log(err)
     }
   }
 }

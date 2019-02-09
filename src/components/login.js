@@ -79,7 +79,7 @@ export class Login extends Component {
                   </Segment>
                   <Segment attached="bottom">
                     <Form styleName="blocks.form">
-                      <Form.Field>
+                      <Form.Field error={error}>
                         <label>Username</label>
                         <input
                           value={username}
@@ -90,7 +90,7 @@ export class Login extends Component {
                           type="text"
                         />
                       </Form.Field>
-                      <Form.Field>
+                      <Form.Field error={error}>
                         <label>Password</label>
                         <div className="ui icon react">
                           <input
@@ -128,16 +128,18 @@ export class Login extends Component {
                         </div>
                       </Form.Field>
                       {error && <div>Invalid credentials provided</div>}
-                      <Button
-                        loading={loading}
-                        fluid
-                        primary
-                        onClick={this.submit}
-                        disabled={disabled}
-                        type="submit"
-                      >
-                        Log in
-                      </Button>
+                      <Form.Field>
+                        <Button
+                          loading={loading}
+                          fluid
+                          primary
+                          onClick={this.submit}
+                          disabled={disabled}
+                          type="submit"
+                        >
+                          Log in
+                        </Button>
+                      </Form.Field>
                       <Link to={getForgotPasswordUrl()}>
                         <div styleName="blocks.forgot">Forgot Password ?</div>
                       </Link>
