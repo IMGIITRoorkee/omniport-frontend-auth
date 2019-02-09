@@ -15,7 +15,7 @@ export const getLogoutUrl = () => {
 }
 
 export const getForgotPasswordUrl = () => {
-  return `${getAuthUrl()}/change/password`
+  return `${getAuthUrl()}/forgot_password`
 }
 
 //  Backend API's

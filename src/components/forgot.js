@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Radio, Button } from 'semantic-ui-react'
+import {
+  Form,
+  Radio,
+  Button,
+  Container,
+  Segment,
+  Header,
+  Grid,
+} from 'semantic-ui-react'
+import { Scrollbars } from 'react-custom-scrollbars'
+import { isBrowser } from 'react-device-detect'
 import { connect } from 'react-redux'
 
 import { getLoginUrl } from '../urls'
 import { getQuestion, validateAnswer, changePassword } from '../actions'
 import { response } from '../utils'
 
-import auth from '../style/forgot.css'
-import reset from '../style/reset.css'
 import login from '../style/login.css'
 
 @connect(
@@ -96,170 +104,196 @@ export class ForgotPassword extends Component {
     }
 
     return (
-      <div styleName="auth.wrapper">
-        <div styleName="auth.header">Password Reset</div>
-        <div styleName="auth.app-main">
-          {isVisible ? (
-            isQuestionVisible ? (
-              <Form styleName="auth.form">
-                <Form.Field>
-                  <label>Username</label>
-                  <input
-                    value={username}
-                    onChange={e =>
-                      this.setState({ username: e.target.value, error: false })
-                    }
-                  />
-                  {error && <div styleName="auth.error">{msg}</div>}
-                  <Button
-                    styleName="auth.signin"
-                    fluid
-                    primary
-                    onClick={this.next}
-                    disabled={!username && true}
-                    type="submit"
-                  >
-                    Next
-                  </Button>
-                </Form.Field>
-              </Form>
-            ) : (
-              <Form styleName="auth.form">
-                <Form.Field>
-                  <Radio
-                    label="Answer a security question to reset your password"
-                    name="radioGroup"
-                    value="question"
-                    checked={value === 'question'}
-                    onChange={this.handleChange}
-                  />
-                </Form.Field>
-                {value === 'question' && (
-                  <Form.Field styleName="auth.question-field">
-                    <div styleName="auth.question">{question}</div>
-                    <input
-                      value={answer}
-                      onChange={e => this.setState({ answer: e.target.value })}
-                      type="text"
-                    />
-                  </Form.Field>
-                )}
-                {error && (
-                  <div styleName="auth.error auth.error-margin">{msg}</div>
-                )}
-                <Form.Field disabled>
-                  <Radio
-                    label="Send a password reset link"
-                    name="radioGroup"
-                    value="link"
-                    checked={value === 'link'}
-                    onChange={this.handleChange}
-                    styleName="auth.reset-link"
-                  />
-                </Form.Field>
-                {value === 'link' && (
-                  <div styleName="auth.help-text">
-                    A password reset link will be sent to your G-Suite id
-                  </div>
-                )}
-                <Button
-                  styleName="auth.signin"
-                  fluid
-                  primary
-                  onClick={this.submit}
-                  disabled={!value && true}
-                  type="submit"
-                >
-                  Continue
-                </Button>
-              </Form>
-            )
-          ) : (
-            false
-          )}
-          {isResetVisible && (
-            <Form styleName="auth.form">
-              <Form.Field>
-                <label>Password</label>
-                <div className="ui icon react">
-                  <input
-                    value={password}
-                    type={type}
-                    onChange={e => this.setState({ password: e.target.value })}
-                    onFocus={() => this.setState({ focus: true })}
-                    onBlur={() => this.setState({ focus: false })}
-                  />
-                  {type === 'password' ? (
-                    <div
-                      onClick={() =>
-                        this.setState({ type: 'text', focus: true })
-                      }
-                      styleName={focus ? 'login.focusshow' : 'login.blurshow'}
-                    >
-                      Show
-                    </div>
+      <Scrollbars>
+        <Container styleName="login.wrapper">
+          <div styleName="login.wrapper">
+            <Grid styleName="login.grid" centered>
+              <Grid.Column width={isBrowser ? 5 : 16}>
+                <Segment attached="top" fluid>
+                  <Header as="h4">Password Reset</Header>
+                </Segment>
+                <Segment attached="bottom">
+                  {isVisible ? (
+                    isQuestionVisible ? (
+                      <Form>
+                        <Form.Field>
+                          <label>Username</label>
+                          <input
+                            value={username}
+                            onChange={e =>
+                              this.setState({
+                                username: e.target.value,
+                                error: false,
+                              })
+                            }
+                          />
+                          {error && <div>{msg}</div>}
+                        </Form.Field>
+                        <Button
+                          fluid
+                          primary
+                          onClick={this.next}
+                          disabled={!username && true}
+                          type="submit"
+                        >
+                          Next
+                        </Button>
+                      </Form>
+                    ) : (
+                      <Form>
+                        <Form.Field>
+                          <Radio
+                            label="Answer a security question to reset your password"
+                            name="radioGroup"
+                            value="question"
+                            checked={value === 'question'}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Field>
+                        {value === 'question' && (
+                          <Form.Field>
+                            <div>{question}</div>
+                            <input
+                              value={answer}
+                              onChange={e =>
+                                this.setState({ answer: e.target.value })
+                              }
+                              type="text"
+                            />
+                          </Form.Field>
+                        )}
+                        {error && <div>{msg}</div>}
+                        <Form.Field disabled>
+                          <Radio
+                            label="Send a password reset link"
+                            name="radioGroup"
+                            value="link"
+                            checked={value === 'link'}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Field>
+                        {value === 'link' && (
+                          <div>
+                            A password reset link will be sent to your G-Suite
+                            id
+                          </div>
+                        )}
+                        <Button
+                          fluid
+                          primary
+                          onClick={this.submit}
+                          disabled={!value && true}
+                          type="submit"
+                        >
+                          Continue
+                        </Button>
+                      </Form>
+                    )
                   ) : (
-                    <div
-                      onClick={() => this.setState({ type: 'password' })}
-                      styleName={focus ? 'login.focusshow' : 'login.blurshow'}
-                    >
-                      Hide
-                    </div>
+                    false
                   )}
-                </div>
-              </Form.Field>
-              <Form.Field>
-                <label>Confirm Password</label>
-                <div className="ui icon react">
-                  <input
-                    value={confirmpassword}
-                    type={type}
-                    onChange={e =>
-                      this.setState({ confirmpassword: e.target.value })
-                    }
-                    onFocus={() => this.setState({ focus: true })}
-                    onBlur={() => this.setState({ focus: false })}
-                  />
-                  {type === 'password' ? (
-                    <div
-                      onClick={() =>
-                        this.setState({ type: 'text', focus: true })
-                      }
-                      styleName={focus ? 'login.focusshow' : 'login.blurshow'}
-                    >
-                      Show
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => this.setState({ type: 'password' })}
-                      styleName={focus ? 'login.focusshow' : 'login.blurshow'}
-                    >
-                      Hide
-                    </div>
-                  )}
-                </div>
-              </Form.Field>
+                  {isResetVisible && (
+                    <Form>
+                      <Form.Field>
+                        <label>Password</label>
+                        <div className="ui icon react">
+                          <input
+                            value={password}
+                            type={type}
+                            onChange={e =>
+                              this.setState({ password: e.target.value })
+                            }
+                            onFocus={() => this.setState({ focus: true })}
+                            onBlur={() => this.setState({ focus: false })}
+                          />
+                          {type === 'password' ? (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'text', focus: true })
+                              }
+                              styleName={
+                                focus ? 'login.focusshow' : 'login.blurshow'
+                              }
+                            >
+                              Show
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'password' })
+                              }
+                              styleName={
+                                focus ? 'login.focusshow' : 'login.blurshow'
+                              }
+                            >
+                              Hide
+                            </div>
+                          )}
+                        </div>
+                      </Form.Field>
+                      <Form.Field>
+                        <label>Confirm Password</label>
+                        <div className="ui icon react">
+                          <input
+                            value={confirmpassword}
+                            type={type}
+                            onChange={e =>
+                              this.setState({
+                                confirmpassword: e.target.value,
+                              })
+                            }
+                            onFocus={() => this.setState({ focus: true })}
+                            onBlur={() => this.setState({ focus: false })}
+                          />
+                          {type === 'password' ? (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'text', focus: true })
+                              }
+                              styleName={
+                                focus ? 'login.focusshow' : 'login.blurshow'
+                              }
+                            >
+                              Show
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'password' })
+                              }
+                              styleName={
+                                focus ? 'login.focusshow' : 'login.blurshow'
+                              }
+                            >
+                              Hide
+                            </div>
+                          )}
+                        </div>
+                      </Form.Field>
 
-              <Button
-                styleName="reset.signin"
-                fluid
-                primary
-                onClick={this.change}
-                disabled={disabled}
-                type="submit"
-              >
-                Change Password
-              </Button>
-              {success && (
-                <div styleName="reset.success">
-                  Successfully updated password &nbsp;
-                  <Link to={getLoginUrl()}>Login</Link>
-                </div>
-              )}
-            </Form>
-          )}
-        </div>
-      </div>
+                      <Button
+                        fluid
+                        primary
+                        onClick={this.change}
+                        disabled={disabled}
+                        type="submit"
+                      >
+                        Change Password
+                      </Button>
+                      {success && (
+                        <div>
+                          Successfully updated password &nbsp;
+                          <Link to={getLoginUrl()}>Login</Link>
+                        </div>
+                      )}
+                    </Form>
+                  )}
+                </Segment>
+              </Grid.Column>
+            </Grid>
+          </div>
+        </Container>
+      </Scrollbars>
     )
   }
 }

@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
-import { Button, Form, Checkbox } from 'semantic-ui-react'
+import {
+  Button,
+  Form,
+  Container,
+  Grid,
+  Segment,
+  Header,
+} from 'semantic-ui-react'
+import { Scrollbars } from 'react-custom-scrollbars'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { isBrowser } from 'react-device-detect'
 
 import { response } from '../utils'
 import { userLogin } from '../actions'
 import { getForgotPasswordUrl } from '../urls'
-import auth from '../style/login.css'
+
+import blocks from '../style/login.css'
 
 @connect(
   null,
@@ -50,67 +60,95 @@ export class Login extends Component {
     }
 
     return (
-      <div styleName="auth.app-main">
-        <div styleName="auth.left" />
-        <div styleName="auth.right">
-          <Form>
-            <Form.Field>
-              <label>Username</label>
-              <input
-                value={username}
-                onFocus={() => this.setState({ focus: false })}
-                onChange={e => this.setState({ username: e.target.value })}
-                type="text"
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>Password</label>
-              <div className="ui icon react">
-                <input
-                  type={type}
-                  styleName="auth.password"
-                  value={password}
-                  onChange={e => this.setState({ password: e.target.value })}
-                  onFocus={() => this.setState({ focus: true })}
-                  onBlur={() => this.setState({ focus: false })}
-                />
-                {type === 'password' ? (
-                  <div
-                    onClick={() => this.setState({ type: 'text', focus: true })}
-                    styleName={focus ? 'auth.focusshow' : 'auth.blurshow'}
-                  >
-                    Show
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => this.setState({ type: 'password' })}
-                    styleName={focus ? 'auth.focusshow' : 'auth.blurshow'}
-                  >
-                    Hide
-                  </div>
-                )}
-              </div>
-            </Form.Field>
-            {error && (
-              <div styleName="auth.error">Invalid credentials provided</div>
-            )}
-            <Button
-              loading={loading}
-              styleName="auth.signin"
-              fluid
-              primary
-              onClick={this.submit}
-              disabled={disabled}
-              type="submit"
+      <Scrollbars autoHide>
+        <Container styleName="blocks.wrapper">
+          <div styleName="blocks.wrapper">
+            <Grid
+              styleName="blocks.grid"
+              style={!isBrowser ? { marginLeft: 0 } : {}}
             >
-              Sign in
-            </Button>
-            <Link to={getForgotPasswordUrl()}>
-              <div styleName="auth.forgot">Forgot Password ?</div>
-            </Link>
-          </Form>
-        </div>
-      </div>
+              {isBrowser && (
+                <Grid.Column width={11}>
+                  <div styleName="blocks.left" />
+                </Grid.Column>
+              )}
+              <Grid.Column width={isBrowser ? 5 : 16}>
+                <div styleName="blocks.form-container">
+                  <Segment attached="top">
+                    <Header as="h4">Log in</Header>
+                  </Segment>
+                  <Segment attached="bottom">
+                    <Form styleName="blocks.form">
+                      <Form.Field>
+                        <label>Username</label>
+                        <input
+                          value={username}
+                          onFocus={() => this.setState({ focus: false })}
+                          onChange={e =>
+                            this.setState({ username: e.target.value })
+                          }
+                          type="text"
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <label>Password</label>
+                        <div className="ui icon react">
+                          <input
+                            type={type}
+                            value={password}
+                            onChange={e =>
+                              this.setState({ password: e.target.value })
+                            }
+                            onFocus={() => this.setState({ focus: true })}
+                            onBlur={() => this.setState({ focus: false })}
+                          />
+                          {type === 'password' ? (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'text', focus: true })
+                              }
+                              styleName={
+                                focus ? 'blocks.focusshow' : 'blocks.blurshow'
+                              }
+                            >
+                              Show
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'password' })
+                              }
+                              styleName={
+                                focus ? 'blocks.focusshow' : 'blocks.blurshow'
+                              }
+                            >
+                              Hide
+                            </div>
+                          )}
+                        </div>
+                      </Form.Field>
+                      {error && <div>Invalid credentials provided</div>}
+                      <Button
+                        loading={loading}
+                        fluid
+                        primary
+                        onClick={this.submit}
+                        disabled={disabled}
+                        type="submit"
+                      >
+                        Log in
+                      </Button>
+                      <Link to={getForgotPasswordUrl()}>
+                        <div styleName="blocks.forgot">Forgot Password ?</div>
+                      </Link>
+                    </Form>
+                  </Segment>
+                </div>
+              </Grid.Column>
+            </Grid>
+          </div>
+        </Container>
+      </Scrollbars>
     )
   }
 }

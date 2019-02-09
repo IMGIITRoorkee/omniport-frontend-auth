@@ -1,35 +1,13 @@
-.container {
+.wrapper{
+  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  height: 100%;
-}
-
-.content-div {
-  flex-grow: 1;
-  display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-  margin-left: auto !important;
-  margin-right: auto !important;
+  flex-direction: column;
 }
 
-.app-main {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 90%;
-  max-width: 90%;
-  margin: auto;
-  padding-top: 4rem;
-  justify-content: space-evenly;
-}
-
-.error {
-  color: #eb5757;
-  margin: 1rem 0;
+.container {
+  width: 100%;
 }
 
 .left {
@@ -38,9 +16,20 @@
   background: #f9f9f9;
 }
 
-.right {
-  margin-top: 2rem;
-  width: 20rem;
+.form {
+  width: 100%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.grid{
+  width: 100%;
 }
 
 .blurshow {
@@ -77,27 +66,6 @@
   cursor: pointer;
 }
 
-.password {
-  padding-right: 3.5rem !important;
-}
-
-.signin {
-  margin-top: 2rem !important;
-  margin-bottom: 1rem !important;
-}
-
 .forgot {
   text-align: right;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-@media only screen and (max-width: 768px) {
-  .left {
-    display: none;
-  }
 }

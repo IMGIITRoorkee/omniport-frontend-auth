@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import { LastLocationProvider } from 'react-router-last-location'
 import { withLastLocation } from 'react-router-last-location'
 
 import { store } from 'core'
+import { Loading } from 'formula_one'
 
 import { response } from '../src/utils'
 
@@ -30,19 +30,7 @@ class PrivateRoute extends React.Component {
     const { isAuthenticated } = this.state
 
     if (isAuthenticated === response.CHECKING) {
-      return (
-        <Segment>
-          <Dimmer
-            active
-            inverted
-            style={{
-              height: '100vh'
-            }}
-          >
-            <Loader size='large' />
-          </Dimmer>
-        </Segment>
-      )
+      return <Loading />
     }
 
     return (

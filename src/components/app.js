@@ -12,7 +12,6 @@ import { Logout } from './logout'
 import { getForgotPasswordUrl, getLoginUrl, getLogoutUrl } from '../urls'
 
 import main from 'formula_one/src/css/app.css'
-import auth from '../style/login.css'
 
 export class App extends Component {
   render () {
@@ -21,7 +20,7 @@ export class App extends Component {
     return (
       <div styleName='main.app'>
         <AppHeader />
-        <div styleName='auth.app-main'>
+        <div styleName='main.app-main'>
           <Switch>
             <Route exact path={getLoginUrl()} component={Login} />
             <Route
