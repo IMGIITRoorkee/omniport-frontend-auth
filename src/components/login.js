@@ -16,12 +16,14 @@ import { isBrowser } from 'react-device-detect'
 import { response } from '../utils'
 import { userLogin } from '../actions'
 import { getForgotPasswordUrl, illustrationRouletteUrlApi, illustrationUrl } from '../urls'
+import { guestUserLogin } from '../actions'
+import { getForgotPasswordUrl } from '../urls'
 
 import blocks from '../style/login.css'
 
 @connect(
   null,
-  { userLogin }
+  { userLogin, guestUserLogin }
 )
 export class Login extends Component {
   state = {
@@ -76,6 +78,24 @@ export class Login extends Component {
 
   render () {
     const { username, password, type, focus, error, loading, illustrationStyle } = this.state
+  guestSubmit = () => {
+    const url = this.state
+    console.log(url)
+    const { guestUserLogin, history } = this.props
+
+
+    this.setState({ guestLoading: true })
+    guestUserLogin(res => {
+      if (res === response.VALID) {
+        history.push(url || '/')
+      } else if (res === response.INVALID) {
+        this.setState({ error: true, loading: false })
+      }
+    })
+  }
+
+  render() {
+    const { username, password, type, focus, error, loading, guestLoading } = this.state
 
     let disabled = false
     if (!username || !password) {
@@ -150,16 +170,29 @@ export class Login extends Component {
                       </Form.Field>
                       {error && <div>Invalid credentials provided</div>}
                       <Form.Field>
-                        <Button
-                          loading={loading}
-                          fluid
-                          primary
-                          onClick={this.submit}
-                          disabled={disabled}
-                          type="submit"
-                        >
-                          Log in
+                        <div>
+                          <Button
+                            loading={loading}
+                            fluid
+                            primary
+                            onClick={this.submit}
+                            disabled={disabled}
+                            type="submit"
+                          >
+                            Log in
+                          </Button>
+                          <Button
+                            basic color = 'blue'
+                            margin = '2px 0px 0px 0px'
+                            class='guest'
+                            loading={guestLoading}
+                            fluid
+                            onClick={this.guestSubmit}
+                            type="submit"
+                          >
+                            Guest Log in
                         </Button>
+                        </div>
                       </Form.Field>
                       <Link to={getForgotPasswordUrl()}>
                         <div styleName="blocks.forgot">Forgot Password ?</div>

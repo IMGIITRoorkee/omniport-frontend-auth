@@ -6,14 +6,15 @@ import {
   getQuestionApi,
   getVerifyAnswerApi,
   changePasswordApi,
-  getUserLogoutUrlApi
+  getUserLogoutUrlApi,
+  getGuestUserLoginUrlApi
 } from 'services/auth/src/urls'
 
 export const userLogin = (data, callback) => {
   return async dispatch => {
     try {
       const res = await axios.post(getUserLoginUrlApi(), data)
-      dispatch({ type: 'LOG_IN', payload: res.data })
+      dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: false })
       callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.nonFieldErrors[0])
@@ -33,13 +34,41 @@ export const userLogout = (_, callback) => {
   }
 }
 
+export const guestUserLogin = (data, callback) => {
+  return async dispatch => {
+    try {
+      const res = await axios.get(getGuestUserLoginUrlApi(), data)
+      dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: true })
+      callback(res.data.status)
+    } catch (err) {
+      callback(err.response.data.errors.nonFieldErrors[0])
+    }
+  }
+}
+
 export const whoami = () => {
   return async (dispatch, getState) => {
     try {
       const res = await axios.get(getWhoAmIApi())
+
+      const roles = res.data.roles
+      
+      var isGuest =false;
+
+      for (var index = 0; index < roles.length; ++index) {
+        var role = roles[index];
+        if(role.role == "Guest"){
+          isGuest = true;
+          break;
+        }
+      }
+      
+      console.log(isGuest)
+
       dispatch({
         type: 'LOG_IN',
-        payload: res.data
+        payload: res.data,
+        isGuestAuth: isGuest
       })
     } catch (err) {
       getState()
