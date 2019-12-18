@@ -66,7 +66,6 @@ export const whoami = () => {
         isGuestAuth: isGuest
       })
     } catch (err) {
-      console.log("HERE")
       getState()
       dispatch({
         type: 'LOG_OUT'
