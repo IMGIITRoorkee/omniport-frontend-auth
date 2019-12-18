@@ -183,7 +183,6 @@ export class Login extends Component {
                           </Button>
                           <Button
                             basic color = 'blue'
-                            margin = '2px 0px 0px 0px'
                             class='guest'
                             loading={guestLoading}
                             fluid
