@@ -10,6 +10,8 @@ import {
   getGuestUserLoginUrlApi
 } from 'services/auth/src/urls'
 
+import { ifRole } from 'formula_one'
+
 export const userLogin = (data, callback) => {
   return async dispatch => {
     try {
@@ -52,18 +54,11 @@ export const whoami = () => {
       const res = await axios.get(getWhoAmIApi())
 
       const roles = res.data.roles
-      
-      var isGuest =false;
+      let isGuest = false
 
-      for (var index = 0; index < roles.length; ++index) {
-        var role = roles[index];
-        if(role.role == "Guest"){
-          isGuest = true;
-          break;
-        }
+      if (ifRole(roles, 'Guest') !== 'NOT_ROLE') {
+        isGuest = true
       }
-      
-      console.log(isGuest)
 
       dispatch({
         type: 'LOG_IN',
@@ -71,6 +66,7 @@ export const whoami = () => {
         isGuestAuth: isGuest
       })
     } catch (err) {
+      console.log("HERE")
       getState()
       dispatch({
         type: 'LOG_OUT'
