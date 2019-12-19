@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import {
   Button,
   Form,
@@ -14,7 +15,7 @@ import { isBrowser } from 'react-device-detect'
 
 import { response } from '../utils'
 import { userLogin } from '../actions'
-import { getForgotPasswordUrl } from '../urls'
+import { getForgotPasswordUrl, illustrationRouletteUrlApi, illustrationUrl } from '../urls'
 
 import blocks from '../style/login.css'
 
@@ -28,11 +29,31 @@ export class Login extends Component {
     focus: false,
     error: false,
     loading: false,
+    illustrationStyle: {
+    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const url = new URL(window.location.href)
     this.setState({ url: url.searchParams.get('next') })
+    axios
+      .get(illustrationRouletteUrlApi())
+      .then(res => {
+        const index = Math.floor(Math.random() * res.data.count)
+        this.setState({
+          illustrationStyle: {
+            background: `url(${window.location.origin +
+              illustrationUrl(index)})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat'
+          }
+        })
+      }).catch(err => {
+        this.setState({
+          illustrationStyle: '#f9f9f9'
+        })
+      })
   }
 
   submit = () => {
@@ -51,8 +72,8 @@ export class Login extends Component {
     }
   }
 
-  render() {
-    const { username, password, type, focus, error, loading } = this.state
+  render () {
+    const { username, password, type, focus, error, loading, illustrationStyle } = this.state
 
     let disabled = false
     if (!username || !password) {
@@ -68,9 +89,7 @@ export class Login extends Component {
               style={!isBrowser ? { marginLeft: 0 } : {}}
             >
               {isBrowser && (
-                <Grid.Column width={11}>
-                  <div styleName="blocks.left" />
-                </Grid.Column>
+                <Grid.Column width={11} style={illustrationStyle} />
               )}
               <Grid.Column width={isBrowser ? 5 : 16}>
                 <div styleName="blocks.form-container">
@@ -114,17 +133,17 @@ export class Login extends Component {
                               Show
                             </div>
                           ) : (
-                            <div
-                              onClick={() =>
-                                this.setState({ type: 'password' })
-                              }
-                              styleName={
-                                focus ? 'blocks.focusshow' : 'blocks.blurshow'
-                              }
-                            >
-                              Hide
+                              <div
+                                onClick={() =>
+                                  this.setState({ type: 'password' })
+                                }
+                                styleName={
+                                  focus ? 'blocks.focusshow' : 'blocks.blurshow'
+                                }
+                              >
+                                Hide
                             </div>
-                          )}
+                            )}
                         </div>
                       </Form.Field>
                       {error && <div>Invalid credentials provided</div>}

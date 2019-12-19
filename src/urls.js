@@ -28,6 +28,10 @@ export const getUserLogoutUrlApi = () => {
   return '/session_auth/logout/'
 }
 
+export const illustrationRouletteUrlApi = () => {
+  return '/session_auth/illustration_roulette/'
+}
+
 export const getWhoAmIApi = () => {
   return '/kernel/who_am_i/'
 }
@@ -42,4 +46,8 @@ export const getVerifyAnswerApi = username => {
 
 export const changePasswordApi = () => {
   return '/base_auth/reset_password/'
+}
+
+export const illustrationUrl = (name) => {
+  return `/static/illustrations/${name}.svg`
 }
