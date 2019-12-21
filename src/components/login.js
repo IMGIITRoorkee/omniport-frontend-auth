@@ -51,7 +51,9 @@ export class Login extends Component {
         })
       }).catch(err => {
         this.setState({
-          illustrationStyle: '#f9f9f9'
+          illustrationStyle: {
+            background: '#f9f9f9'
+          }
         })
       })
   }
