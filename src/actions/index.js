@@ -54,11 +54,8 @@ export const whoami = () => {
       const res = await axios.get(getWhoAmIApi())
 
       const roles = res.data.roles
-      let isGuest = false
 
-      if (ifRole(roles, 'Guest') !== 'NOT_ROLE') {
-        isGuest = true
-      }
+      let isGuest = (ifRole(roles, 'Guest') !== 'NOT_ROLE') ? true:false
 
       dispatch({
         type: 'LOG_IN',

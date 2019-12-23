@@ -2,12 +2,13 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { LastLocationProvider } from 'react-router-last-location'
 import { withLastLocation } from 'react-router-last-location'
-import { Segment, Icon } from 'semantic-ui-react'
+import { Segment, Icon, Container } from 'semantic-ui-react'
 import { store } from 'core'
 import { Loading } from 'formula_one'
 
 import { response } from '../src/utils'
 
+import blocks from '../src/style/login.css'
 
 class PrivateRoute extends React.Component {
   state = {
@@ -31,7 +32,6 @@ class PrivateRoute extends React.Component {
     const { history, guestAllowed, component: C, props: cProps, ...rest } = this.props
     const { isAuthenticated, isGuestAuthenticated } = this.state
 
-
     if (isAuthenticated === response.CHECKING) {
       return <Loading />
     }
@@ -43,11 +43,13 @@ class PrivateRoute extends React.Component {
           render={props =>
             isAuthenticated ? (
               (isGuestAuthenticated && !guestAllowed) ? (
-                <Segment basic textAlign='center' width='100%' margin= 'auto'>
+                <Container textAlign='center' width='100%'  margin= 'auto' styleName='blocks.guestErrorContainer'>
+                <div styleName='blocks.guestErrorMessage'>
                 <Icon name='frown outline' />
                 Guest users are not authorised to access this page.
                 Kindly Login with username to access.
-                </Segment>
+                </div>
+                </Container>
               ) : (
               <C {...props} {...cProps} />
               )

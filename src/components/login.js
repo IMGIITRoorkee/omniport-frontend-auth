@@ -17,7 +17,6 @@ import { response } from '../utils'
 import { userLogin } from '../actions'
 import { getForgotPasswordUrl, illustrationRouletteUrlApi, illustrationUrl } from '../urls'
 import { guestUserLogin } from '../actions'
-import { getForgotPasswordUrl } from '../urls'
 
 import blocks from '../style/login.css'
 
@@ -76,11 +75,8 @@ export class Login extends Component {
     }
   }
 
-  render () {
-    const { username, password, type, focus, error, loading, illustrationStyle } = this.state
   guestSubmit = () => {
-    const url = this.state
-    console.log(url)
+    const { url } = this.state
     const { guestUserLogin, history } = this.props
 
 
@@ -95,7 +91,7 @@ export class Login extends Component {
   }
 
   render() {
-    const { username, password, type, focus, error, loading, guestLoading } = this.state
+    const { username, password, type, focus, error, loading, guestLoading, illustrationStyle } = this.state
 
     let disabled = false
     if (!username || !password) {
@@ -170,7 +166,7 @@ export class Login extends Component {
                       </Form.Field>
                       {error && <div>Invalid credentials provided</div>}
                       <Form.Field>
-                        <div>
+                        <div styleName='blocks.loginButtons'>
                           <Button
                             loading={loading}
                             fluid
@@ -183,7 +179,6 @@ export class Login extends Component {
                           </Button>
                           <Button
                             basic color = 'blue'
-                            class='guest'
                             loading={guestLoading}
                             fluid
                             onClick={this.guestSubmit}
