@@ -42,7 +42,7 @@ class PrivateRoute extends React.Component {
           {...rest}
           render={props =>
             isAuthenticated ? (
-              (isGuestAuthenticated && !guestAllowed) ? (
+              (isGuestAuthenticated && (!guestAllowed || false)) ? (
                 <Container textAlign='center' width='100%'  margin= 'auto' styleName='blocks.guestErrorContainer'>
                 <div styleName='blocks.guestErrorMessage'>
                 <Icon name='frown outline' />
