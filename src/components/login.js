@@ -33,29 +33,9 @@ export class Login extends Component {
     }
   }
 
-  componentDidMount () {
-    const url = new URL(window.location.href)
-    this.setState({ url: url.searchParams.get('next') })
-    axios
-      .get(illustrationRouletteUrlApi())
-      .then(res => {
-        const index = Math.floor(Math.random() * res.data.count)
-        this.setState({
-          illustrationStyle: {
-            background: `url(${window.location.origin +
-              illustrationUrl(index)})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat'
-          }
-        })
-      }).catch(err => {
-        this.setState({
-          illustrationStyle: {
-            background: '#f9f9f9'
-          }
-        })
-      })
+  componentDidMount() {
+    const url = window.location.href
+    this.setState({ url: url.substring(url.indexOf('?next=')+6) })
   }
 
   submit = () => {
