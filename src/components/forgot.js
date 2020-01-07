@@ -14,14 +14,14 @@ import { isBrowser } from 'react-device-detect'
 import { connect } from 'react-redux'
 
 import { getLoginUrl } from '../urls'
-import { getQuestion, validateAnswer, changePassword } from '../actions'
+import { getQuestion, validateAnswer, changePassword, getToken } from '../actions'
 import { response } from '../utils'
 
 import login from '../style/login.css'
 
 @connect(
   null,
-  { validateAnswer, getQuestion, changePassword }
+  { validateAnswer, getQuestion, changePassword, getToken }
 )
 export class ForgotPassword extends Component {
   state = {
@@ -35,24 +35,35 @@ export class ForgotPassword extends Component {
 
   handleChange = (e, { value }) => this.setState({ value })
 
-  submit = () => {
-    const { validateAnswer } = this.props
-    const { username, answer } = this.state
+  submit = (e, { value }) => {
+    
+    if(value == 'question'){
+      const { validateAnswer } = this.props
+      const { username, answer } = this.state
 
-    validateAnswer({ username, secret_answer: answer }, res => {
-      if (res === response.CORRECT) {
-        this.setState({ isResetVisible: true, isVisible: false })
-      } else if (response.EXCEEDED) {
-        let tries = res[res['length'] - 1]
-        this.setState({
-          error: true,
-          msg:
-            tries > 0
-              ? `*Incorrect answer, You have only ${tries} tries left.`
-              : '*You have exceeded maximum number of tries. ',
-        })
+      validateAnswer({ username, secret_answer: answer }, res => {
+        if (res === response.CORRECT) {
+          this.setState({ isResetVisible: true, isVisible: false })
+        } else if (response.EXCEEDED) {
+          let tries = res[res['length'] - 1]
+          this.setState({
+            error: true,
+            msg:
+              tries > 0
+                ? `*Incorrect answer, You have only ${tries} tries left.`
+                : '*You have exceeded maximum number of tries. ',
+          })
+        }
+      })    
+    }else{
+      const { getToken } = this.props
+      const { username } = this.state
+
+      getToken(username), res => {
+        
       }
-    })
+    }
+
   }
 
   next = () => {
@@ -164,7 +175,7 @@ export class ForgotPassword extends Component {
                           </Form.Field>
                         )}
                         {error && <div>{msg}</div>}
-                        <Form.Field disabled>
+                        <Form.Field>
                           <Radio
                             label="Send a password reset link"
                             name="radioGroup"
@@ -272,7 +283,11 @@ export class ForgotPassword extends Component {
                             </div>
                           )}
                         </div>
-                      </Form.Field>
+                      </Form.Field>title: 'Success',
+        description: res.data['message'],
+        animation: 'fade up',
+        icon: 'check',
+        
                       <Form.Field>
                         <Button
                           fluid

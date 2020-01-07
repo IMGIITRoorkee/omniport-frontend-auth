@@ -8,8 +8,9 @@ import PRoute from 'services/auth/pRoute'
 import { ForgotPassword } from './forgot'
 import { Login } from './login'
 import { Logout } from './logout'
+import { ResetPassword } from './reset_pass'
 
-import { getForgotPasswordUrl, getLoginUrl, getLogoutUrl } from '../urls'
+import { getForgotPasswordUrl, getLoginUrl, getLogoutUrl, resetPasswordUrl } from '../urls'
 
 import main from 'formula_one/src/css/app.css'
 
@@ -29,6 +30,7 @@ export class App extends Component {
               component={ForgotPassword}
             />
             <Route exact path={getLogoutUrl()} component={Logout} />
+            <Route exact path={resetPasswordUrl()} component={ResetPassword}/>
           </Switch>
         </div>
         <AppFooter creators={creators} />
