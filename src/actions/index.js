@@ -113,7 +113,6 @@ export const resetPassword = (data, callback) => {
   return async () => {
     try {
       const res = await axios.post(resetPasswordApi(), data)
-      console.log(res.data)
       callback(res.data)
     } catch (err) {
       callback(err.response.data.errors.username[0])
@@ -144,21 +143,9 @@ export const verifyToken = (token, callback) => {
   return async () => {
     try{
       const res = await axios.get(verifyTokenApi(token))
-      console.log(res.data)
       callback(res.data)
     } catch (err) {
-      try {
-        if(err.response.status === 404){
-          toast({
-            type: 'error',
-            title: 'Error',
-            description: 'Invalid Recovery Token',
-            animation: 'fade up',
-            icon: 'frown',
-            time: 4000
-          })
-        }
-      } catch (err) {}
+        callback(err.response.data.errors.username[0])
     }
   }
 }

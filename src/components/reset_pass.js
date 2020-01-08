@@ -8,7 +8,8 @@ import {
   Header,
   Grid,
   Checkbox,
-  Image
+  Image,
+  Message
 } from 'semantic-ui-react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isBrowser } from 'react-device-detect'
@@ -18,6 +19,7 @@ import { verifyToken, resetPassword } from '../actions'
 import { getLoginUrl } from '../urls'
 import { response } from '../utils/index'
 import login from '../style/login.css'
+import reset_pass from '../style/reset_pass.css'
 
 @connect(
     null,
@@ -84,7 +86,28 @@ export class ResetPassword extends Component {
           }
       
         if(username === '')
-          return <Container>Invalid recovery_token</Container>
+          return (
+            <Container styleName="login.wrapper">
+              <div styleName="login.wrapper">
+                <Grid styleName="login.grid" centered>
+                  <Grid.Column width={isBrowser ? 5 : 16}>
+                    <Segment.Group>
+                    <Segment >
+                        <Header as="h4">
+                          Password Reset
+                        </Header>
+                      </Segment>
+                      <Segment>
+                          <Message negative>
+                            The link is expired expired or invalid.
+                          </Message>
+                      </Segment>
+                    </Segment.Group>
+                  </Grid.Column>
+                </Grid>
+              </div>
+            </Container>
+          )
         else
         return (
             <Scrollbars>
@@ -92,14 +115,17 @@ export class ResetPassword extends Component {
                 <div styleName="login.wrapper">
                     <Grid styleName="login.grid" centered>
                     <Grid.Column width={isBrowser ? 5 : 16}>
-                        <Segment attached="top" fluid>
-                        <Header as="h2">Password Reset</Header>
+                      <Segment.Group>
+                      <Segment >
+                          <Header as="h4">
+                            Password Reset
+                          </Header>
                         </Segment>
                         <Segment>
-                            <Image src={display_picture} avatar />
-                            <span>{username}</span>
+                          <Image src={display_picture} avatar />
+                          <span>{username}</span>
                         </Segment>
-                        <Segment>
+                        <Segment >
                         <Form>
                       <Form.Field>
                         <label>Password</label>
@@ -188,7 +214,6 @@ export class ResetPassword extends Component {
                           fluid
                           primary
                           onClick={this.change}
-                          disabled={disabled}
                           type="submit"
                         >
                           Change Password
@@ -202,6 +227,7 @@ export class ResetPassword extends Component {
                       )}
                             </Form>
                         </Segment>
+                        </Segment.Group>
                     </Grid.Column>
                     </Grid>
                 </div>

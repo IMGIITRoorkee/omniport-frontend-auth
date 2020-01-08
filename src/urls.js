@@ -68,5 +68,5 @@ export const verifyTokenApi = (token) => {
   return `/base_auth/verify/?recovery_token=${token}`
 }
 export const resetPasswordApi = () => {
-  return `/base_auth/recover_password/`
+  return `/base_auth/verify/`
 }
