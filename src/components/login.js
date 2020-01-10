@@ -155,7 +155,7 @@ export class Login extends Component {
                           fluid
                           primary
                           onClick={this.submit}
-                          disabled={disabled}
+                          disabled={disabled || loading}
                           type="submit"
                         >
                           Log in
