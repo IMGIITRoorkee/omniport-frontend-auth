@@ -122,12 +122,12 @@ export const resetPassword = (data, callback) => {
 
 export const getToken = (username, callback) => {
   return async () => {
-    try{
+    try {
       const res = await axios.get(getTokenApi(username))
       toast({
         type: 'success',
         title: 'Success',
-        description: res.data['text'],
+        description: res.data,
         animation: 'fade up',
         icon: 'check',
         time: 4000
@@ -139,14 +139,13 @@ export const getToken = (username, callback) => {
   }
 }
 
-export const verifyToken = (token, callback) => {
+export const verifyToken = (token, successCallback, errCallback) => {
   return async () => {
-    try{
+    try {
       const res = await axios.get(verifyTokenApi(token))
-      callback(res.data)
+      successCallback(res.data)
     } catch (err) {
-        callback(err.response.data.errors.username[0])
+      errCallback(err)
     }
   }
 }
-

@@ -65,7 +65,7 @@ export const resetPasswordUrl = () => {
 }
 
 export const verifyTokenApi = (token) => {
-  return `/base_auth/verify/?recovery_token=${token}`
+  return `/base_auth/verify/?token=${token}`
 }
 export const resetPasswordApi = () => {
   return `/base_auth/verify/`
