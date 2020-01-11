@@ -1,0 +1,30 @@
+.header {
+font-family: Lato !important;
+font-style: normal !important;
+font-weight: bold !important;
+font-size: 32px !important;
+line-height: 38px !important;
+text-align: center !important;
+color: #6435C9 !important;
+}
+
+.info {
+    padding-top:74px;
+    padding: 20px;
+    width: 216px;
+    height: 38px;
+    left: 887px;
+    top: 262px;
+
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #333333;
+}
+
+.form-container {
+    padding-top: 70px;
+}

@@ -55,3 +55,18 @@ export const changePasswordApi = () => {
 export const illustrationUrl = (name) => {
   return `/static/illustrations/${name}.svg`
 }
+
+export const getTokenApi = (username) => {
+  return `/base_auth/recover_password/?username=${username}`
+}
+
+export const resetPasswordUrl = () => {
+  return `/auth/reset_password/`
+}
+
+export const verifyTokenApi = (token) => {
+  return `/base_auth/verify/?token=${token}`
+}
+export const resetPasswordApi = () => {
+  return `/base_auth/verify/`
+}

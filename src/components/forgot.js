@@ -7,22 +7,24 @@ import {
   Container,
   Segment,
   Header,
-  Grid,
+  Grid
 } from 'semantic-ui-react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { isBrowser } from 'react-device-detect'
 import { connect } from 'react-redux'
 
 import { getLoginUrl } from '../urls'
-import { getQuestion, validateAnswer, changePassword } from '../actions'
+import {
+  getQuestion,
+  validateAnswer,
+  changePassword,
+  getToken
+} from '../actions'
 import { response } from '../utils'
 
 import login from '../style/login.css'
 
-@connect(
-  null,
-  { validateAnswer, getQuestion, changePassword }
-)
+@connect(null, { validateAnswer, getQuestion, changePassword, getToken })
 export class ForgotPassword extends Component {
   state = {
     error: false,
@@ -30,29 +32,36 @@ export class ForgotPassword extends Component {
     isResetVisible: false,
     isVisible: true,
     type: 'password',
-    value: 'question',
+    value: 'question'
   }
 
   handleChange = (e, { value }) => this.setState({ value })
 
-  submit = () => {
-    const { validateAnswer } = this.props
-    const { username, answer } = this.state
+  submit = (e, { value }) => {
+    if (value == 'question') {
+      const { validateAnswer } = this.props
+      const { username, answer } = this.state
 
-    validateAnswer({ username, secret_answer: answer }, res => {
-      if (res === response.CORRECT) {
-        this.setState({ isResetVisible: true, isVisible: false })
-      } else if (response.EXCEEDED) {
-        let tries = res[res['length'] - 1]
-        this.setState({
-          error: true,
-          msg:
-            tries > 0
-              ? `*Incorrect answer, You have only ${tries} tries left.`
-              : '*You have exceeded maximum number of tries. ',
-        })
-      }
-    })
+      validateAnswer({ username, secret_answer: answer }, res => {
+        if (res === response.CORRECT) {
+          this.setState({ isResetVisible: true, isVisible: false })
+        } else if (response.EXCEEDED) {
+          let tries = res[res['length'] - 1]
+          this.setState({
+            error: true,
+            msg:
+              tries > 0
+                ? `*Incorrect answer, You have only ${tries} tries left.`
+                : '*You have exceeded maximum number of tries. '
+          })
+        }
+      })
+    } else {
+      const { getToken } = this.props
+      const { username } = this.state
+
+      getToken(username), res => {}
+    }
   }
 
   next = () => {
@@ -82,7 +91,7 @@ export class ForgotPassword extends Component {
     )
   }
 
-  render() {
+  render () {
     const {
       answer,
       value,
@@ -96,7 +105,7 @@ export class ForgotPassword extends Component {
       password,
       confirmpassword,
       type,
-      success,
+      success
     } = this.state
 
     let disabled = true
@@ -106,14 +115,14 @@ export class ForgotPassword extends Component {
 
     return (
       <Scrollbars>
-        <Container styleName="login.wrapper">
-          <div styleName="login.wrapper">
-            <Grid styleName="login.grid" centered>
+        <Container styleName='login.wrapper'>
+          <div styleName='login.wrapper'>
+            <Grid styleName='login.grid' centered>
               <Grid.Column width={isBrowser ? 5 : 16}>
-                <Segment attached="top" fluid>
-                  <Header as="h4">Password Reset</Header>
+                <Segment attached='top' fluid>
+                  <Header as='h4'>Password Reset</Header>
                 </Segment>
-                <Segment attached="bottom">
+                <Segment attached='bottom'>
                   {isVisible ? (
                     isQuestionVisible ? (
                       <Form>
@@ -124,7 +133,7 @@ export class ForgotPassword extends Component {
                             onChange={e =>
                               this.setState({
                                 username: e.target.value,
-                                error: false,
+                                error: false
                               })
                             }
                           />
@@ -135,7 +144,7 @@ export class ForgotPassword extends Component {
                           primary
                           onClick={this.next}
                           disabled={!username && true}
-                          type="submit"
+                          type='submit'
                         >
                           Next
                         </Button>
@@ -144,9 +153,9 @@ export class ForgotPassword extends Component {
                       <Form>
                         <Form.Field>
                           <Radio
-                            label="Answer a security question to reset your password"
-                            name="radioGroup"
-                            value="question"
+                            label='Answer a security question to reset your password'
+                            name='radioGroup'
+                            value='question'
                             checked={value === 'question'}
                             onChange={this.handleChange}
                           />
@@ -159,24 +168,24 @@ export class ForgotPassword extends Component {
                               onChange={e =>
                                 this.setState({ answer: e.target.value })
                               }
-                              type="text"
+                              type='text'
                             />
                           </Form.Field>
                         )}
                         {error && <div>{msg}</div>}
-                        <Form.Field disabled>
+                        <Form.Field>
                           <Radio
-                            label="Send a password reset link"
-                            name="radioGroup"
-                            value="link"
+                            label='Send a password reset link'
+                            name='radioGroup'
+                            value='link'
                             checked={value === 'link'}
                             onChange={this.handleChange}
                           />
                         </Form.Field>
                         {value === 'link' && (
                           <div>
-                            A password reset link will be sent to your G-Suite
-                            id
+                            A password reset link will be sent to your institute
+                            email id
                           </div>
                         )}
                         <Form.Field>
@@ -185,7 +194,7 @@ export class ForgotPassword extends Component {
                             primary
                             onClick={this.submit}
                             disabled={!value && true}
-                            type="submit"
+                            type='submit'
                           >
                             Continue
                           </Button>
@@ -199,7 +208,7 @@ export class ForgotPassword extends Component {
                     <Form>
                       <Form.Field>
                         <label>Password</label>
-                        <div className="ui icon react">
+                        <div className='ui icon react'>
                           <input
                             value={password}
                             type={type}
@@ -236,13 +245,13 @@ export class ForgotPassword extends Component {
                       </Form.Field>
                       <Form.Field>
                         <label>Confirm Password</label>
-                        <div className="ui icon react">
+                        <div className='ui icon react'>
                           <input
                             value={confirmpassword}
                             type={type}
                             onChange={e =>
                               this.setState({
-                                confirmpassword: e.target.value,
+                                confirmpassword: e.target.value
                               })
                             }
                             onFocus={() => this.setState({ focus: true })}
@@ -273,13 +282,15 @@ export class ForgotPassword extends Component {
                           )}
                         </div>
                       </Form.Field>
+                      title: 'Success', description: res.data['message'],
+                      animation: 'fade up', icon: 'check',
                       <Form.Field>
                         <Button
                           fluid
                           primary
                           onClick={this.change}
                           disabled={disabled}
-                          type="submit"
+                          type='submit'
                         >
                           Change Password
                         </Button>

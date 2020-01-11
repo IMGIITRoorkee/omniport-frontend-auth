@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toast } from 'react-semantic-toasts'
 
 import {
   getUserLoginUrlApi,
@@ -7,7 +8,10 @@ import {
   getVerifyAnswerApi,
   changePasswordApi,
   getUserLogoutUrlApi,
-  getGuestUserLoginUrlApi
+  getGuestUserLoginUrlApi,
+  getTokenApi,
+  verifyTokenApi,
+  resetPasswordApi
 } from 'services/auth/src/urls'
 
 import { ifRole } from 'formula_one'
@@ -101,6 +105,47 @@ export const changePassword = (data, callback) => {
       callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.secretAnswer[0])
+    }
+  }
+}
+
+export const resetPassword = (data, callback) => {
+  return async () => {
+    try {
+      const res = await axios.post(resetPasswordApi(), data)
+      callback(res.data)
+    } catch (err) {
+      callback(err.response.data.errors.username[0])
+    }
+  }
+}
+
+export const getToken = (username, callback) => {
+  return async () => {
+    try {
+      const res = await axios.get(getTokenApi(username))
+      toast({
+        type: 'success',
+        title: 'Success',
+        description: res.data,
+        animation: 'fade up',
+        icon: 'check',
+        time: 4000
+      })
+      callback(res.data.text)
+    } catch (err) {
+      callback(err.response.data.errors.username[0])
+    }
+  }
+}
+
+export const verifyToken = (token, successCallback, errCallback) => {
+  return async () => {
+    try {
+      const res = await axios.get(verifyTokenApi(token))
+      successCallback(res.data)
+    } catch (err) {
+      errCallback(err)
     }
   }
 }
