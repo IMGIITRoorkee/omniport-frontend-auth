@@ -35,8 +35,8 @@ export class Login extends Component {
   }
 
   componentDidMount () {
-    const url = new URL(window.location.href)
-    this.setState({ url: url.searchParams.get('next') })
+    const url = window.location.href
+    this.setState({ url: url.substring(url.indexOf('?next=')+6) })
     axios
       .get(illustrationRouletteUrlApi())
       .then(res => {
@@ -172,7 +172,7 @@ export class Login extends Component {
                             fluid
                             primary
                             onClick={this.submit}
-                            disabled={disabled}
+                            disabled={disabled || loading || guestLoading}
                             type="submit"
                           >
                             Log in
@@ -182,6 +182,7 @@ export class Login extends Component {
                             loading={guestLoading}
                             fluid
                             onClick={this.guestSubmit}
+                            disabled={disabled || loading || guestLoading}
                             type="submit"
                           >
                             Guest Log in
