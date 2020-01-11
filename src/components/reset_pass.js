@@ -30,7 +30,8 @@ export class ResetPassword extends Component {
     display_picture: '',
     verified: false,
     token: '',
-    username: '',
+    personId: '',
+    full_name: '',
     type: 'password',
     remove_all_sessions: false,
     success: false,
@@ -46,7 +47,8 @@ export class ResetPassword extends Component {
         this.setState({
           loaded: true,
           loading: false,
-          username: res.fullName,
+          personId: res.id,
+	  full_name: res.fullName,
           display_picture: res.displayPicture
         })
       },
@@ -74,11 +76,11 @@ export class ResetPassword extends Component {
   }
 
   change = () => {
-    const { password, token, username, remove_all_sessions } = this.state
+    const { password, token, personId, remove_all_sessions, full_name } = this.state
     const { resetPassword } = this.props
 
     resetPassword(
-      { username, token, new_password: password, remove_all_sessions },
+      { person_id: personId, token, new_password: password, remove_all_sessions },
       res => {
         if (res === response.UPDATED) {
           this.setState({ success: true })
@@ -91,7 +93,8 @@ export class ResetPassword extends Component {
 
   render () {
     const {
-      username,
+      personId,
+      full_name,
       display_picture,
       password,
       confirmpassword,
@@ -106,7 +109,7 @@ export class ResetPassword extends Component {
       disabled = false
     }
 
-    if (username === '')
+    if (personId === '')
       return (
         <Container styleName='login.wrapper'>
           <div styleName='login.wrapper'>
@@ -148,7 +151,7 @@ export class ResetPassword extends Component {
                     </Segment>
                     <Segment>
                       <Image src={display_picture} avatar />
-                      <span>{username}</span>
+                      <span>{full_name}</span>
                     </Segment>
                     <Segment>
                       <Form>
