@@ -6,7 +6,7 @@ import {
   Container,
   Grid,
   Segment,
-  Header,
+  Header
 } from 'semantic-ui-react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Link } from 'react-router-dom'
@@ -15,28 +15,28 @@ import { isBrowser } from 'react-device-detect'
 
 import { response } from '../utils'
 import { userLogin } from '../actions'
-import { getForgotPasswordUrl, illustrationRouletteUrlApi, illustrationUrl } from '../urls'
+import {
+  getForgotPasswordUrl,
+  illustrationRouletteUrlApi,
+  illustrationUrl
+} from '../urls'
 import { guestUserLogin } from '../actions'
 
 import blocks from '../style/login.css'
 
-@connect(
-  null,
-  { userLogin, guestUserLogin }
-)
+@connect(null, { userLogin, guestUserLogin })
 export class Login extends Component {
   state = {
     type: 'password',
     focus: false,
     error: false,
     loading: false,
-    illustrationStyle: {
-    }
+    illustrationStyle: {}
   }
 
   componentDidMount () {
     const url = window.location.href
-    this.setState({ url: url.substring(url.indexOf('?next=')+6) })
+    this.setState({ url: url.substring(url.indexOf('?next=') + 6) })
     axios
       .get(illustrationRouletteUrlApi())
       .then(res => {
@@ -50,7 +50,8 @@ export class Login extends Component {
             backgroundRepeat: 'no-repeat'
           }
         })
-      }).catch(err => {
+      })
+      .catch(err => {
         this.setState({
           illustrationStyle: {
             background: '#f9f9f9'
@@ -79,7 +80,6 @@ export class Login extends Component {
     const { url } = this.state
     const { guestUserLogin, history } = this.props
 
-
     this.setState({ guestLoading: true })
     guestUserLogin(res => {
       if (res === response.VALID) {
@@ -90,8 +90,17 @@ export class Login extends Component {
     })
   }
 
-  render() {
-    const { username, password, type, focus, error, loading, guestLoading, illustrationStyle } = this.state
+  render () {
+    const {
+      username,
+      password,
+      type,
+      focus,
+      error,
+      loading,
+      guestLoading,
+      illustrationStyle
+    } = this.state
 
     let disabled = false
     if (!username || !password) {
@@ -100,22 +109,22 @@ export class Login extends Component {
 
     return (
       <Scrollbars autoHide>
-        <Container styleName="blocks.wrapper">
-          <div styleName="blocks.wrapper">
+        <Container styleName='blocks.wrapper'>
+          <div styleName='blocks.wrapper'>
             <Grid
-              styleName="blocks.grid"
+              styleName='blocks.grid'
               style={!isBrowser ? { marginLeft: 0 } : {}}
             >
               {isBrowser && (
                 <Grid.Column width={11} style={illustrationStyle} />
               )}
               <Grid.Column width={isBrowser ? 5 : 16}>
-                <div styleName="blocks.form-container">
-                  <Segment attached="top">
-                    <Header as="h4">Log in</Header>
+                <div styleName='blocks.form-container'>
+                  <Segment attached='top'>
+                    <Header as='h4'>Log in</Header>
                   </Segment>
-                  <Segment attached="bottom">
-                    <Form styleName="blocks.form">
+                  <Segment attached='bottom'>
+                    <Form styleName='blocks.form'>
                       <Form.Field error={error}>
                         <label>Username</label>
                         <input
@@ -124,12 +133,12 @@ export class Login extends Component {
                           onChange={e =>
                             this.setState({ username: e.target.value })
                           }
-                          type="text"
+                          type='text'
                         />
                       </Form.Field>
                       <Form.Field error={error}>
                         <label>Password</label>
-                        <div className="ui icon react">
+                        <div className='ui icon react'>
                           <input
                             type={type}
                             value={password}
@@ -151,17 +160,17 @@ export class Login extends Component {
                               Show
                             </div>
                           ) : (
-                              <div
-                                onClick={() =>
-                                  this.setState({ type: 'password' })
-                                }
-                                styleName={
-                                  focus ? 'blocks.focusshow' : 'blocks.blurshow'
-                                }
-                              >
-                                Hide
+                            <div
+                              onClick={() =>
+                                this.setState({ type: 'password' })
+                              }
+                              styleName={
+                                focus ? 'blocks.focusshow' : 'blocks.blurshow'
+                              }
+                            >
+                              Hide
                             </div>
-                            )}
+                          )}
                         </div>
                       </Form.Field>
                       {error && <div>Invalid credentials provided</div>}
@@ -173,24 +182,25 @@ export class Login extends Component {
                             primary
                             onClick={this.submit}
                             disabled={disabled || loading || guestLoading}
-                            type="submit"
+                            type='submit'
                           >
                             Log in
                           </Button>
                           <Button
-                            basic color = 'blue'
+                            basic
+                            color='blue'
                             loading={guestLoading}
                             fluid
                             onClick={this.guestSubmit}
-                            disabled={disabled || loading || guestLoading}
-                            type="submit"
+                            disabled={loading || guestLoading}
+                            type='submit'
                           >
                             Guest Log in
-                        </Button>
+                          </Button>
                         </div>
                       </Form.Field>
                       <Link to={getForgotPasswordUrl()}>
-                        <div styleName="blocks.forgot">Forgot Password ?</div>
+                        <div styleName='blocks.forgot'>Forgot Password ?</div>
                       </Link>
                     </Form>
                   </Segment>
