@@ -6,14 +6,17 @@ import {
   getQuestionApi,
   getVerifyAnswerApi,
   changePasswordApi,
-  getUserLogoutUrlApi
+  getUserLogoutUrlApi,
+  getGuestUserLoginUrlApi
 } from 'services/auth/src/urls'
+
+import { ifRole } from 'formula_one'
 
 export const userLogin = (data, callback) => {
   return async dispatch => {
     try {
       const res = await axios.post(getUserLoginUrlApi(), data)
-      dispatch({ type: 'LOG_IN', payload: res.data })
+      dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: false })
       callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.nonFieldErrors[0])
@@ -33,13 +36,31 @@ export const userLogout = (_, callback) => {
   }
 }
 
+export const guestUserLogin = (data, callback) => {
+  return async dispatch => {
+    try {
+      const res = await axios.get(getGuestUserLoginUrlApi(), data)
+      dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: true })
+      callback(res.data.status)
+    } catch (err) {
+      callback(err.response.data.errors.nonFieldErrors[0])
+    }
+  }
+}
+
 export const whoami = () => {
   return async (dispatch, getState) => {
     try {
       const res = await axios.get(getWhoAmIApi())
+
+      const roles = res.data.roles
+
+      let isGuest = (ifRole(roles, 'Guest') !== 'NOT_ROLE') ? true:false
+
       dispatch({
         type: 'LOG_IN',
-        payload: res.data
+        payload: res.data,
+        isGuestAuth: isGuest
       })
     } catch (err) {
       getState()

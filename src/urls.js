@@ -32,6 +32,10 @@ export const illustrationRouletteUrlApi = () => {
   return '/session_auth/illustration_roulette/'
 }
 
+export const getGuestUserLoginUrlApi = () => {
+  return '/guest_auth/login/'
+}
+
 export const getWhoAmIApi = () => {
   return '/kernel/who_am_i/'
 }
