@@ -48,7 +48,7 @@ export class ResetPassword extends Component {
           loaded: true,
           loading: false,
           personId: res.id,
-	  full_name: res.fullName,
+          full_name: res.fullName,
           display_picture: res.displayPicture
         })
       },
@@ -76,20 +76,36 @@ export class ResetPassword extends Component {
   }
 
   change = () => {
-    const { password, token, personId, remove_all_sessions, full_name } = this.state
+    const {
+      password,
+      token,
+      personId,
+      remove_all_sessions,
+      full_name
+    } = this.state
     const { resetPassword } = this.props
 
     resetPassword(
-      { person_id: personId, token, new_password: password, remove_all_sessions },
+      {
+        person_id: personId,
+        token,
+        new_password: password,
+        remove_all_sessions
+      },
       res => {
         if (res === response.UPDATED) {
           this.setState({ success: true })
+        } else {
+          this.setState({ error: true })
         }
       }
     )
   }
 
-  toggle = () => this.setState(prevState => ({ remove_all_sessions: !prevState.remove_all_sessions }))
+  toggle = () =>
+    this.setState(prevState => ({
+      remove_all_sessions: !prevState.remove_all_sessions
+    }))
 
   render () {
     const {
@@ -153,109 +169,112 @@ export class ResetPassword extends Component {
                       <Image src={display_picture} avatar />
                       <span>{full_name}</span>
                     </Segment>
-                    <Segment>
-                      <Form>
-                        <Form.Field>
-                          <label>Password</label>
-                          <div className='ui icon react'>
-                            <input
-                              value={password}
-                              type={type}
-                              onChange={e =>
-                                this.setState({ password: e.target.value })
-                              }
-                              onFocus={() => this.setState({ focus: true })}
-                              onBlur={() => this.setState({ focus: false })}
+                    {!success ? (
+                      <Segment>
+                        <Form>
+                          <Form.Field>
+                            <label>Password</label>
+                            <div className='ui icon react'>
+                              <input
+                                value={password}
+                                type={type}
+                                onChange={e =>
+                                  this.setState({ password: e.target.value })
+                                }
+                                onFocus={() => this.setState({ focus: true })}
+                                onBlur={() => this.setState({ focus: false })}
+                              />
+                              {type === 'password' ? (
+                                <div
+                                  onClick={() =>
+                                    this.setState({ type: 'text', focus: true })
+                                  }
+                                  styleName={
+                                    focus ? 'login.focusshow' : 'login.blurshow'
+                                  }
+                                >
+                                  Show
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={() =>
+                                    this.setState({ type: 'password' })
+                                  }
+                                  styleName={
+                                    focus ? 'login.focusshow' : 'login.blurshow'
+                                  }
+                                >
+                                  Hide
+                                </div>
+                              )}
+                            </div>
+                          </Form.Field>
+                          <Form.Field>
+                            <label>Confirm Password</label>
+                            <div className='ui icon react'>
+                              <input
+                                value={confirmpassword}
+                                type={type}
+                                onChange={e =>
+                                  this.setState({
+                                    confirmpassword: e.target.value
+                                  })
+                                }
+                                onFocus={() => this.setState({ focus: true })}
+                                onBlur={() => this.setState({ focus: false })}
+                              />
+                              {type === 'password' ? (
+                                <div
+                                  onClick={() =>
+                                    this.setState({ type: 'text', focus: true })
+                                  }
+                                  styleName={
+                                    focus ? 'login.focusshow' : 'login.blurshow'
+                                  }
+                                >
+                                  Show
+                                </div>
+                              ) : (
+                                <div
+                                  onClick={() =>
+                                    this.setState({ type: 'password' })
+                                  }
+                                  styleName={
+                                    focus ? 'login.focusshow' : 'login.blurshow'
+                                  }
+                                >
+                                  Hide
+                                </div>
+                              )}
+                            </div>
+                          </Form.Field>
+                          <Form.Field>
+                            <Checkbox
+                              label='Log out from all other sessions'
+                              onChange={this.toggle}
                             />
-                            {type === 'password' ? (
-                              <div
-                                onClick={() =>
-                                  this.setState({ type: 'text', focus: true })
-                                }
-                                styleName={
-                                  focus ? 'login.focusshow' : 'login.blurshow'
-                                }
-                              >
-                                Show
-                              </div>
-                            ) : (
-                              <div
-                                onClick={() =>
-                                  this.setState({ type: 'password' })
-                                }
-                                styleName={
-                                  focus ? 'login.focusshow' : 'login.blurshow'
-                                }
-                              >
-                                Hide
-                              </div>
-                            )}
-                          </div>
-                        </Form.Field>
-                        <Form.Field>
-                          <label>Confirm Password</label>
-                          <div className='ui icon react'>
-                            <input
-                              value={confirmpassword}
-                              type={type}
-                              onChange={e =>
-                                this.setState({
-                                  confirmpassword: e.target.value
-                                })
-                              }
-                              onFocus={() => this.setState({ focus: true })}
-                              onBlur={() => this.setState({ focus: false })}
-                            />
-                            {type === 'password' ? (
-                              <div
-                                onClick={() =>
-                                  this.setState({ type: 'text', focus: true })
-                                }
-                                styleName={
-                                  focus ? 'login.focusshow' : 'login.blurshow'
-                                }
-                              >
-                                Show
-                              </div>
-                            ) : (
-                              <div
-                                onClick={() =>
-                                  this.setState({ type: 'password' })
-                                }
-                                styleName={
-                                  focus ? 'login.focusshow' : 'login.blurshow'
-                                }
-                              >
-                                Hide
-                              </div>
-                            )}
-                          </div>
-                        </Form.Field>
-                        <Form.Field>
-                          <Checkbox
-                            label='Log out from all other sessions'
-                            onChange={this.toggle}
-                          />
-                        </Form.Field>
-                        <Form.Field>
-                          <Button
-                            fluid
-                            disabled={disabled}
-                            primary
-                            onClick={this.change}
-                            type='submit'
-                          >
-                            Change Password
-                          </Button>
-                        </Form.Field>
-                        {success && (
-                          <div>
-                            Successfully updated password &nbsp;
-                            <Link to={getLoginUrl()}>Login</Link>
-                          </div>
-                        )}
-                      </Form>
-                    </Segment>
+                          </Form.Field>
+                          <Form.Field>
+                            <Button
+                              fluid
+                              disabled={disabled}
+                              primary
+                              onClick={this.change}
+                              type='submit'
+                            >
+                              Change Password
+                            </Button>
+                          </Form.Field>
+                        </Form>
+                      </Segment>
+                    ) : (
+                      <Segment>
+                        <Message positive>
+                          Successfully updated password &nbsp;
+                          <Link to={getLoginUrl()}>Login</Link>
+                        </Message>
+                      </Segment>
+                    )}
                   </Segment.Group>
                 </Grid.Column>
               </Grid>
