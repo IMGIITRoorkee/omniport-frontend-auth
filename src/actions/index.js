@@ -59,7 +59,7 @@ export const whoami = () => {
 
       const roles = res.data.roles
 
-      let isGuest = (ifRole(roles, 'Guest') !== 'NOT_ROLE') ? true:false
+      let isGuest = ifRole(roles, 'Guest') !== 'NOT_ROLE' ? true : false
 
       dispatch({
         type: 'LOG_IN',
@@ -132,7 +132,7 @@ export const getToken = (username, callback) => {
         icon: 'check',
         time: 4000
       })
-      callback(res.data.text)
+      callback(res.data)
     } catch (err) {
       callback(err.response.data.errors.username[0])
     }
