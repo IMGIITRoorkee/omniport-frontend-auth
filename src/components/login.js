@@ -14,6 +14,8 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isBrowser } from 'react-device-detect'
 
+import { setCookie } from 'formula_one'
+
 import { response } from '../utils'
 import { userLogin } from '../actions'
 import {
@@ -36,9 +38,10 @@ export class Login extends Component {
     illustrationStyle: {}
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { location } = this.props
     const url = location.search
+    setCookie('session_id', '', 0.00000001)
     this.setState({ url: url.substring(url.indexOf('?next=') + 6) })
     axios
       .get(illustrationRouletteUrlApi())
@@ -222,7 +225,7 @@ export class Login extends Component {
                               {!registerLoading && (
                                 <Form>
                                   <Form.Field inline>
-                                    <label>Select a Profile</label>
+                                    <Header as='h4'>Select a Profile</Header>
                                     <Form.Radio
                                       label='Student'
                                       value='student'
@@ -243,7 +246,6 @@ export class Login extends Component {
                                     />
                                   </Form.Field>
                                   <Button
-                                    basic
                                     color='blue'
                                     fluid
                                     loading={registerLoading}
@@ -253,6 +255,7 @@ export class Login extends Component {
                                   >Proceed</Button>
                                 </Form>
                               )}
+                              
                               {registerLoading &&
                                 < RegistrationCredentials role={this.state.role} />
                               }
