@@ -35,7 +35,8 @@ export class Login extends Component {
   }
 
   componentDidMount () {
-    const url = window.location.href
+    const { location } = this.props
+    const url = location.search
     this.setState({ url: url.substring(url.indexOf('?next=') + 6) })
     axios
       .get(illustrationRouletteUrlApi())

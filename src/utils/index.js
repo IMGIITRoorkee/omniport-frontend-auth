@@ -1,5 +1,5 @@
 export const response = {
-  VALID: 'Successfully logged in.',
+  VALID: 'Successfully logged in',
   INVALID: 'Invalid credentials provided.',
   DNE: 'Username does not exist.',
   CHECKING: 'checking',
