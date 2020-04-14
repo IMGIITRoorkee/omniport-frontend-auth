@@ -38,6 +38,15 @@ export default (state = initialState, action) => {
       }
     }
 
+    case 'SUBMIT_CREDENTIALS': {
+      return {
+        ...state,
+        details: {
+          loaded: true,
+          profile: action.payload
+        }
+      }
+    }
     default: {
       return state
     }

@@ -11,7 +11,8 @@ import {
   getGuestUserLoginUrlApi,
   getTokenApi,
   verifyTokenApi,
-  resetPasswordApi
+  resetPasswordApi,
+  registrationUrl
 } from 'services/auth/src/urls'
 
 import { ifRole } from 'formula_one'
@@ -147,5 +148,22 @@ export const verifyToken = (token, successCallback, errCallback) => {
     } catch (err) {
       errCallback(err)
     }
+  }
+}
+
+export const submitCredentials = (data, successCallback, errCallback) => {
+  return dispatch => {
+    axios
+      .get(registrationUrl(), { params: data })
+      .then(res => {
+        dispatch({
+          type: 'SUBMIT_CREDENTIALS',
+          payload: { loaded: true, data: res.data }
+        })
+        successCallback(res)
+      })
+      .catch(err => {
+        errCallback(err)
+      })
   }
 }
