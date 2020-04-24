@@ -10,12 +10,12 @@ import {
   Modal
 } from 'semantic-ui-react'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { isBrowser } from 'react-device-detect'
 
 import { setCookie } from 'formula_one'
-
+import configs from 'core/src/configs/configs.json'
 import { response } from '../utils'
 import { userLogin } from '../actions'
 import {
@@ -24,7 +24,6 @@ import {
   illustrationUrl
 } from '../urls'
 import { guestUserLogin } from '../actions'
-import RegistrationCredentials from './register'
 import blocks from '../style/login.css'
 
 @connect(null, { userLogin, guestUserLogin })
@@ -117,7 +116,13 @@ export class Login extends Component {
     if (!username || !password) {
       disabled = true
     }
-
+    function registrationCheck(service) {
+      return service.nomenclature.name === "registration";
+    }
+    let reg = 'false';
+    if (configs.services.find(registrationCheck) !== undefined) {
+      reg = 'true';
+    }
     return (
       <Scrollbars autoHide>
         <Container styleName='blocks.wrapper'>
@@ -213,57 +218,74 @@ export class Login extends Component {
                       <Link to={getForgotPasswordUrl()}>
                         <div styleName='blocks.forgot'>Forgot Password ?</div>
                       </Link>
-                      <div styleName='blocks.register'>
-                        Don't have an account?
-                        <Modal
-                          trigger={<a> Register Here</a>}
-                          closeIcon
-                        >
-                          <Modal.Content>
-                            <div styleName='blocks.wrapper'>
 
-                              {!registerLoading && (
-                                <Form>
-                                  <Form.Field inline>
-                                    <Header as='h4'>Select a Profile</Header>
-                                    <Form.Radio
-                                      label='Student'
-                                      value='student'
-                                      checked={this.state.role === 'student'}
-                                      onChange={this.handleRadioChange}
-                                    />
-                                    <Form.Radio
-                                      label='Faculty'
-                                      value='faculty_member'
-                                      checked={this.state.role === 'faculty_member'}
-                                      onChange={this.handleRadioChange}
-                                    />
-                                    <Form.Radio
-                                      label='Other Staff'
-                                      value='other_staff'
-                                      checked={this.state.role === 'other_staff'}
-                                      onChange={this.handleRadioChange}
-                                    />
-                                  </Form.Field>
-                                  <Button
-                                    color='blue'
-                                    fluid
-                                    loading={registerLoading}
-                                    onClick={this.roleSubmit}
-                                    disabled={!role || registerLoading}
-                                    type='submit'
-                                  >Proceed</Button>
-                                </Form>
-                              )}
-                              
-                              {registerLoading &&
-                                < RegistrationCredentials role={this.state.role} />
+                      {configs.services.find(registrationCheck) !== undefined &&
+                        (
+                          <div styleName='blocks.register'>
+                            Don't have an account?
+                            <Modal
+                              trigger={<a href='#'> Register Here</a>}
+                              closeIcon
+                              size='mini'
+                            >
+                              {!registerLoading ?
+                                (<Header>Select a Profile</Header>) :
+                                (<Header>Registration</Header>)
                               }
 
-                            </div>
-                          </Modal.Content>
-                        </Modal>
-                      </div>
+                              <Modal.Content>
+                                <div styleName='blocks.wrapper'>
+
+                                  {!registerLoading && (
+                                    <Form>
+                                      <Form.Field inline>
+                                        <Grid.Column width='5'>
+                                          <Form.Radio
+                                            label='Student'
+                                            value='student'
+                                            checked={this.state.role === 'student'}
+                                            onChange={this.handleRadioChange}
+                                          />
+                                          <Form.Radio
+                                            label='Faculty'
+                                            value='faculty_member'
+                                            checked={this.state.role === 'faculty_member'}
+                                            onChange={this.handleRadioChange}
+                                          />
+                                          <Form.Radio
+                                            label='Other Staff'
+                                            value='other_staff'
+                                            checked={this.state.role === 'other_staff'}
+                                            onChange={this.handleRadioChange}
+                                          />
+                                        </Grid.Column>
+                                      </Form.Field>
+                                      <Button
+                                        color='blue'
+                                        fluid
+                                        loading={registerLoading}
+                                        onClick={this.roleSubmit}
+                                        disabled={!role || registerLoading}
+                                        type='submit'
+                                      >Proceed</Button>
+                                    </Form>
+                                  )}
+
+                                </div>
+                              </Modal.Content>
+                            </Modal>
+                          </div>
+                        )
+                      }
+                      {(registerLoading && role == "student") &&
+                        <Redirect to={{ pathname: "/registration/register_student", state: { role: role } }} />
+                      }
+                      {(registerLoading && role == "faculty_member") &&
+                        <Redirect to={{ pathname: "/registration/register_faculty", state: { role: role } }} />
+                      }
+                      {(registerLoading && role == "other_staff") &&
+                        <Redirect to={{ pathname: "/registration/register_staff", state: { role: role } }} />
+                      }
                     </Form>
                   </Segment>
                 </div>

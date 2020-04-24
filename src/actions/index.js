@@ -150,20 +150,3 @@ export const verifyToken = (token, successCallback, errCallback) => {
     }
   }
 }
-
-export const submitCredentials = (data, successCallback, errCallback) => {
-  return dispatch => {
-    axios
-      .get(registrationUrl(), { params: data })
-      .then(res => {
-        dispatch({
-          type: 'SUBMIT_CREDENTIALS',
-          payload: { loaded: true, data: res.data }
-        })
-        successCallback(res)
-      })
-      .catch(err => {
-        errCallback(err)
-      })
-  }
-}

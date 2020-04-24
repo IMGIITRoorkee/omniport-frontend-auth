@@ -70,7 +70,3 @@ export const verifyTokenApi = (token) => {
 export const resetPasswordApi = () => {
   return `/base_auth/verify/`
 }
-
-export const registrationUrl = () => {
-  return `/api/registration/create_session`
-}
