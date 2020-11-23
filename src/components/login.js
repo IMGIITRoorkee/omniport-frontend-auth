@@ -278,13 +278,13 @@ export class Login extends Component {
                         )
                       }
                       {(registerLoading && role == "student") &&
-                        <Redirect to={{ pathname: "/registration/register_student", state: { role: role } }} />
+                        <Redirect to={{ pathname: "/registration/register_student" }} />
                       }
                       {(registerLoading && role == "faculty_member") &&
-                        <Redirect to={{ pathname: "/registration/register_faculty", state: { role: role } }} />
+                        <Redirect to={{ pathname: "/registration/register_faculty" }} />
                       }
                       {(registerLoading && role == "other_staff") &&
-                        <Redirect to={{ pathname: "/registration/register_staff", state: { role: role } }} />
+                        <Redirect to={{ pathname: "/registration/register_staff" }} />
                       }
                     </Form>
                   </Segment>
