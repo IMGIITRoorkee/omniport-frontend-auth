@@ -11,7 +11,8 @@ import {
   getGuestUserLoginUrlApi,
   getTokenApi,
   verifyTokenApi,
-  resetPasswordApi
+  resetPasswordApi,
+  registrationUrl
 } from 'services/auth/src/urls'
 
 import { ifRole } from 'formula_one'

@@ -70,6 +70,10 @@
   text-align: right;
 }
 
+.register {
+  text-align: center;
+}
+
 .loginButtons {
   height: 6rem;
   display: flex;
