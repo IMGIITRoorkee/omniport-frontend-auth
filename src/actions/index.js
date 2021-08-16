@@ -44,7 +44,7 @@ export const userLogout = (_, callback) => {
 export const guestUserLogin = (data, callback) => {
   return async dispatch => {
     try {
-      const res = await axios.get(getGuestUserLoginUrlApi(), data)
+      const res = await axios.get(getGuestUserLoginUrlApi())
       dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: true })
       callback(res.data.status)
     } catch (err) {

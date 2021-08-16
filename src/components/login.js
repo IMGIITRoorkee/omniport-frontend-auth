@@ -88,7 +88,7 @@ export class Login extends Component {
     const { guestUserLogin, history } = this.props
 
     this.setState({ guestLoading: true })
-    guestUserLogin(res => {
+    guestUserLogin({}, res => {
       if (res === response.VALID) {
         history.push(url || '/')
       } else if (res === response.INVALID) {
@@ -202,6 +202,7 @@ export class Login extends Component {
                           >
                             Log in
                           </Button>
+                          {!window.location.host.includes('internet') &&
                           <Button
                             basic
                             color='blue'
@@ -211,8 +212,8 @@ export class Login extends Component {
                             disabled={loading || guestLoading}
                             type='submit'
                           >
-                            Guest Log in
-                          </Button>
+                            View as Guest
+                          </Button>}
                         </div>
                       </Form.Field>
                       <Link to={getForgotPasswordUrl()}>
