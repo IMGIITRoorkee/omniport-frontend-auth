@@ -18,7 +18,7 @@ import { isBrowser } from 'react-device-detect'
 import { connect } from 'react-redux'
 
 import { verifyToken, resetPassword } from '../actions'
-import { getLoginUrl } from '../urls'
+import { getForgotPasswordUrl, getLoginUrl } from '../urls'
 import { response } from '../utils/index'
 import login from '../style/login.css'
 import reset_pass from '../style/reset_pass.css'
@@ -144,7 +144,11 @@ export class ResetPassword extends Component {
                   ) : (
                     <Segment>
                       <Message negative>
-                        The link is either expired or invalid.
+                        <p>The link is either expired or invalid.</p>
+                        <p>
+                          Generate a new link by clicking
+                          <Link to={getForgotPasswordUrl()}> here</Link>
+                        </p>
                       </Message>
                     </Segment>
                   )}
