@@ -75,7 +75,7 @@ export class Login extends Component {
       this.setState({ loading: true })
       userLogin({ username, password }, res => {
         if (res === response.VALID) {
-          history.push(url || '/')
+          window.location = `${window.location.origin}${url}`
         } else if (res === response.INVALID) {
           this.setState({ error: true, loading: false })
         }
@@ -90,7 +90,7 @@ export class Login extends Component {
     this.setState({ guestLoading: true })
     guestUserLogin({}, res => {
       if (res === response.VALID) {
-        history.push(url || '/')
+        window.location = `${window.location.origin}${url}`
       } else if (res === response.INVALID) {
         this.setState({ error: true, loading: false })
       }
