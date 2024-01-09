@@ -36,6 +36,10 @@ export const getGuestUserLoginUrlApi = () => {
   return '/guest_auth/login/'
 }
 
+export const getGoogleOAuthUrlApi = (forwardLink) => {
+  return `/open_auth/google_oauth/${forwardLink}`
+}
+
 export const getWhoAmIApi = () => {
   return '/kernel/who_am_i/'
 }

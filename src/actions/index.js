@@ -16,6 +16,21 @@ import {
 } from 'services/auth/src/urls'
 
 import { ifRole } from 'formula_one'
+import { getGoogleOAuthUrlApi } from '../urls'
+
+export const checkUserAuthStatus = (data, callback) => {
+  return async dispatch => {
+    try {
+      const res = await axios.get(getGoogleOAuthUrlApi('check_auth_status/'))
+      if (res.data) {
+        dispatch({ type: 'LOG_IN', payload: res.data, isGuestAuth: false})
+      }
+      callback(res.data.status)
+    } catch (err) {
+      callback(err.response.data.errors.nonFieldErrors[0])
+    }
+  }
+}
 
 export const userLogin = (data, callback) => {
   return async dispatch => {

@@ -20,13 +20,15 @@ import { response } from '../utils'
 import { userLogin } from '../actions'
 import {
   getForgotPasswordUrl,
+  getGoogleOAuthUrlApi,
   illustrationRouletteUrlApi,
   illustrationUrl
 } from '../urls'
 import { guestUserLogin } from '../actions'
+import { checkUserAuthStatus } from '../actions'
 import blocks from '../style/login.css'
 
-@connect(null, { userLogin, guestUserLogin })
+@connect(null, { userLogin, guestUserLogin, checkUserAuthStatus })
 export class Login extends Component {
   state = {
     type: 'password',
@@ -38,7 +40,17 @@ export class Login extends Component {
   }
 
   componentDidMount() {
-    const { location } = this.props
+    const { checkUserAuthStatus, location } = this.props
+
+    // Checking if the user is already authenticated in the beginning itself
+    checkUserAuthStatus({}, res => {
+      if (res === response.VALID) {
+        history.push(url || '/')
+      } else if (res === response.INVALID) {
+        this.setState({ error: true, loading: false })
+      }
+    })
+
     const url = location.search
     setCookie('session_id', '', 0.00000001)
     this.setState({ url: url.substring(url.indexOf('?next=') + 6) })
@@ -97,6 +109,11 @@ export class Login extends Component {
     })
   }
 
+  googleOAuthSubmit = () => {
+    // this.setState({ googleOAuthLoading: true })
+    console.log("Google OAuth")
+  }
+
   roleSubmit = () => { this.setState({ registerLoading: true }) }
   render() {
     const {
@@ -107,6 +124,7 @@ export class Login extends Component {
       error,
       loading,
       guestLoading,
+      googleOAuthLoading,
       registerLoading,
       illustrationStyle,
       role
@@ -197,7 +215,7 @@ export class Login extends Component {
                             fluid
                             primary
                             onClick={this.submit}
-                            disabled={disabled || loading || guestLoading}
+                            disabled={disabled || loading || guestLoading || googleOAuthLoading}
                             type='submit'
                           >
                             Log in
@@ -209,11 +227,22 @@ export class Login extends Component {
                             loading={guestLoading}
                             fluid
                             onClick={this.guestSubmit}
-                            disabled={loading || guestLoading}
+                            disabled={loading || guestLoading || googleOAuthLoading}
                             type='submit'
                           >
                             View as Guest
                           </Button>}
+                          <Button
+                            loading={loading}
+                            fluid
+                            primary
+                            // onClick={this.googleOAuthSubmit}
+                            href={getGoogleOAuthUrlApi('get_authorization_code/')}
+                            disabled={loading || guestLoading || googleOAuthLoading}
+                            type='submit'
+                          >
+                            Login with Google
+                          </Button>
                         </div>
                       </Form.Field>
                       <Link to={getForgotPasswordUrl()}>

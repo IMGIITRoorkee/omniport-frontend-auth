@@ -75,7 +75,8 @@
 }
 
 .loginButtons {
-  height: 6rem;
+  /* height: 6rem; */
+  height: 9rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
