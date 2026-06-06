@@ -15,7 +15,7 @@ import {
   registrationUrl
 } from 'services/auth/src/urls'
 
-import { ifRole } from 'formula_one'
+import { ifRole, getCookie } from 'formula_one'
 
 export const userLogin = (data, callback) => {
   return async dispatch => {
@@ -91,7 +91,9 @@ export const getQuestion = (username, callback) => {
 export const validateAnswer = (data, callback) => {
   return async () => {
     try {
-      const res = await axios.post(getVerifyAnswerApi(data.username), data)
+      const res = await axios.post(getVerifyAnswerApi(data.username), data, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+      })
       callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.secretAnswer[0])
@@ -102,7 +104,9 @@ export const validateAnswer = (data, callback) => {
 export const changePassword = (data, callback) => {
   return async () => {
     try {
-      const res = await axios.post(changePasswordApi(), data)
+      const res = await axios.post(changePasswordApi(), data, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+      })
       callback(res.data.status)
     } catch (err) {
       callback(err.response.data.errors.secretAnswer[0])
@@ -113,7 +117,9 @@ export const changePassword = (data, callback) => {
 export const resetPassword = (data, callback) => {
   return async () => {
     try {
-      const res = await axios.post(resetPasswordApi(), data)
+      const res = await axios.post(resetPasswordApi(), data, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+      })
       callback(res.data)
     } catch (err) {
       callback(err.response.data.errors.username[0])

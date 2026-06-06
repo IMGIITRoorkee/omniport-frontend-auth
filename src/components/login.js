@@ -41,7 +41,9 @@ export class Login extends Component {
     const { location } = this.props
     const url = location.search
     setCookie('session_id', '', 0.00000001)
-    this.setState({ url: url.substring(url.indexOf('?next=') + 6) })
+    const raw = url.substring(url.indexOf('?next=') + 6)
+    const safe = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/'
+    this.setState({ url: safe })
     axios
       .get(illustrationRouletteUrlApi())
       .then(res => {
@@ -75,7 +77,7 @@ export class Login extends Component {
       this.setState({ loading: true })
       userLogin({ username, password }, res => {
         if (res === response.VALID) {
-          history.push(url || '/')
+          history.push(url || '/') // url is already sanitised in componentDidMount
         } else if (res === response.INVALID) {
           this.setState({ error: true, loading: false })
         }

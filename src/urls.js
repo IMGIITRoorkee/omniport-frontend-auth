@@ -41,11 +41,11 @@ export const getWhoAmIApi = () => {
 }
 
 export const getQuestionApi = username => {
-  return `/base_auth/verify_secret_answer/?username=${username}`
+  return `/base_auth/verify_secret_answer/?username=${encodeURIComponent(username)}`
 }
 
 export const getVerifyAnswerApi = username => {
-  return `/base_auth/verify_secret_answer/?username=${username}`
+  return `/base_auth/verify_secret_answer/?username=${encodeURIComponent(username)}`
 }
 
 export const changePasswordApi = () => {
@@ -57,7 +57,7 @@ export const illustrationUrl = (name) => {
 }
 
 export const getTokenApi = (username) => {
-  return `/base_auth/recover_password/?username=${username}`
+  return `/base_auth/recover_password/?username=${encodeURIComponent(username)}`
 }
 
 export const resetPasswordUrl = () => {
