@@ -1,7 +1,6 @@
 const initialState = {
   next: '',
   isAuthenticated: 'checking',
-  isGuestAuthenticated: false,
   details: {
     profile: {
       loggedIn: false,
@@ -17,7 +16,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        isGuestAuthenticated: action.isGuestAuth,
         details: {
           loaded: true,
           profile: action.payload
@@ -30,7 +28,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        isGuestAuthenticated: false,
         details: {
           ...state.details,
           loaded: false
