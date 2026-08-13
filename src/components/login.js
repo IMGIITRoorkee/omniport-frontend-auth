@@ -23,10 +23,9 @@ import {
   illustrationRouletteUrlApi,
   illustrationUrl
 } from '../urls'
-import { guestUserLogin } from '../actions'
 import blocks from '../style/login.css'
 
-@connect(null, { userLogin, guestUserLogin })
+@connect(null, { userLogin })
 export class Login extends Component {
   state = {
     type: 'password',
@@ -83,20 +82,6 @@ export class Login extends Component {
     }
   }
 
-  guestSubmit = () => {
-    const { url } = this.state
-    const { guestUserLogin, history } = this.props
-
-    this.setState({ guestLoading: true })
-    guestUserLogin({}, res => {
-      if (res === response.VALID) {
-        history.push(url || '/')
-      } else if (res === response.INVALID) {
-        this.setState({ error: true, loading: false })
-      }
-    })
-  }
-
   roleSubmit = () => { this.setState({ registerLoading: true }) }
   render() {
     const {
@@ -106,7 +91,6 @@ export class Login extends Component {
       focus,
       error,
       loading,
-      guestLoading,
       registerLoading,
       illustrationStyle,
       role
@@ -197,23 +181,11 @@ export class Login extends Component {
                             fluid
                             primary
                             onClick={this.submit}
-                            disabled={disabled || loading || guestLoading}
+                            disabled={disabled || loading}
                             type='submit'
                           >
                             Log in
                           </Button>
-                          {!window.location.host.includes('internet') &&
-                          <Button
-                            basic
-                            color='blue'
-                            loading={guestLoading}
-                            fluid
-                            onClick={this.guestSubmit}
-                            disabled={loading || guestLoading}
-                            type='submit'
-                          >
-                            View as Guest
-                          </Button>}
                         </div>
                       </Form.Field>
                       <Link to={getForgotPasswordUrl()}>

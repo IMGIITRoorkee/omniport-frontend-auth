@@ -80,14 +80,3 @@
   justify-content: space-between;
   flex-direction: column;
 }
-
-.guestErrorContainer {
-  margin-top: 10rem;
-  justify-content: 'center';
-  align-items: 'center'; 
-}
-
-.guestErrorMessage{
-  font-size: 1.3rem;
-  color: #808080;
-}
