@@ -40,6 +40,11 @@ export const userLogout = (_, callback) => {
 
 export const whoami = () => {
   return async (dispatch, getState) => {
+    // The micro-frontends share this store, so only the first to mount fetches
+    if (getState().user.isAuthenticated === true) {
+      return
+    }
+
     try {
       const res = await axios.get(getWhoAmIApi())
 
